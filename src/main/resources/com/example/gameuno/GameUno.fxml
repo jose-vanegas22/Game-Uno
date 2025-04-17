@@ -6,9 +6,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox fx:id="VBoxPrincipal" alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gameuno.Controllers.GameUnoController">
    <children>
+      <HBox fx:id="HBoxCartsMaquinaContainer" alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
+         <VBox.margin>
+            <Insets bottom="175.0" />
+         </VBox.margin>
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+      </HBox>
       <HBox alignment="BOTTOM_RIGHT" prefHeight="123.0" prefWidth="600.0">
          <VBox.margin>
             <Insets />

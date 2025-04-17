@@ -24,7 +24,7 @@ public class Carts {
             "card_uno.png", "deck_of_cards.png",
             "reserve_blue.png", "reserve_green.png", "reserve_red.png", "reserve_yellow.png",
             "skip_blue.png", "skip_green.png", "skip_red.png", "skip_yellow.png",
-            "wild.png"
+            "1_wild.png"
     };
 
     /**
