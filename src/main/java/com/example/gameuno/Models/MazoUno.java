@@ -9,42 +9,32 @@ import java.util.Stack;
 public class MazoUno {
 
 
-        Stack<Carta> mazo = new Stack<>();
+        Stack<Carta> mazo = new Stack<>(); //Pila la cual contiene el maso, funciona con logica LIFO
 
     public MazoUno() {
-        mazo = new Stack<>();
-        prepararMazo();
-        Collections.shuffle(mazo);
+        mazo = new Stack<>(); //Aqui se inicializa la pila
+        prepararMazo(); //Se crea el mazo
     }
 
-        //Aqui creo un objeto de la clase jugador
-       // JugadorPersona persona = new JugadorPersona("Jugador");
 
-
-        //En esta parte lo que hago es repartir 5 cartas para cada uno
-      //  for(int i = 0; i < 5; i++){
-        //    persona.recibirCarta(mazo.pop());
-        //}
-
-
+    //Este metodo es el que crear el mazo, guardando cada combinacion posible y aceptable en la pila mazo
     private void prepararMazo() {
 
-        String[] colores = {"blue", "green", "red", "yellow"};
-        String[] valores = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
-
         //Esta parte crea las cartas numericas normales
-        for (String color : colores) {
+        String[] colores = {"blue", "green", "red", "yellow"}; //Arreglo de colores
+        String[] valores = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}; //Arreglo de valores
+        for (String color : colores) { //For-each tipo, variable, coleccion
             for (String valor : valores) { //Recorre ambas listas y las combina ej(blue 1)
-                String nombreArchivo = valor + "_" + color + ".png";
-                mazo.push(new Carta(color, valor, nombreArchivo)); //Mete la carta creada en la pila
+                String nombreArchivo = valor + "_" + color + ".png"; //Guarda los valores como una direccion
+                mazo.push(new Carta(color, valor, nombreArchivo)); //Crear un objeto carta y la guarda en la pila
 
             }
         }
 
-        //Añadir la carta +2 dos veces por cada color
+
+        //Esta parte añade la carta +2 dos veces por cada color
         String[] colores2 = {"wild_draw_blue", "wild_draw_green", "wild_draw_red", "wild_draw_yellow"};
         String[] valores2 = {"2"};
-
         for (String color : colores2) {
             for (String valor : valores2) {
                 String nombreArchivo = valor + "_" + color + ".png";
@@ -53,7 +43,7 @@ public class MazoUno {
             }
         }
 
-        //Añadir una carta de ceder turno por color
+        //Esta parte añade una carta de ceder turno por color
         String[] colores3 = {"blue", "green", "red", "yellow"};
         String[] valores3 = {"skip"};
         for (String color : colores3) {
@@ -64,7 +54,7 @@ public class MazoUno {
         }
 
 
-        //Añadir una carta de reserved por color
+        //Esta parte añade una carta de reserved por color
         String[] colores4 = {"blue", "green", "red", "yellow"};
         String[] valores4 = {"reserve"};
         for (String color : colores4) {
@@ -74,7 +64,7 @@ public class MazoUno {
             }
         }
 
-        //Añadir 4 cartas +4 al mazo
+        //Esta parte añade 4 cartas +4 al mazo
         String[] colores5 = {"wild_draw"};
         String[] valores5 = {"4"};
         for (String color : colores5) {
@@ -87,7 +77,7 @@ public class MazoUno {
         }
 
 
-        //Añadir 4 cartas de cambio de color
+        //Esta parte añade 4 cartas de cambio de color
         String[] colores6 = {"wild"};
         String[] valores6 = {"1"};
         for (String color : colores6) {
@@ -98,8 +88,12 @@ public class MazoUno {
                 }
             }
         }
+
+        //Al final cuando ya la pila esta creada aqui se reorganiza de forma aleatoria
+        Collections.shuffle(mazo);
     }
 
+    //Metodo el cual devuelve la pila que se creo
     public Stack<Carta> getMazo() {
         return mazo;
     }

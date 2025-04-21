@@ -6,7 +6,7 @@ import java.util.List;
 public class Jugador {
 
     private String nombre;
-    private List<Carta> mano;
+    private List<Carta> mano; //Lista la cual guarda las cartas que tiene el jugador
 
     public Jugador(String nombre) {
         this.nombre = nombre;
@@ -22,6 +22,7 @@ public class Jugador {
         return nombre;
     }
 
+    //El metodo muestra las cartas que tiene el jugador en mano
     public List<Carta> getMano() {
         return mano;
     }

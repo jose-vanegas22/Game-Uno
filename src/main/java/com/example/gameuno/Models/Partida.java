@@ -6,22 +6,28 @@ import java.util.Stack;
 
 public class Partida {
 
-    private MazoUno mazo;
+    private MazoUno mazo; //Instancia de MazoUno
     private List<Jugador> jugadores;
+    private Carta cartaCentral;
+    private MesaDeJuego mesa;
+
 
     public Partida() {
         mazo = new MazoUno();  // Crear y preparar el mazo
-        jugadores = new ArrayList<>();
+        jugadores = new ArrayList<>(); //Lista vacia donde se almacenan los jugadores
+        mesa = new MesaDeJuego();
     }
 
     public void agregarJugador(Jugador jugador) {
         jugadores.add(jugador);
     }
 
-    public void repartirCartasIniciales(int cantidad) {
-        for (Jugador jugador : jugadores) {
+    //Este metodo reparte las cartas de los jugadores que estan en la lista, en este caso a la persona
+    //y a la maquina
+    public void repartirCartasIniciales(int cantidad) { //Debe recibir una cantidad de cartas
+        for (Jugador jugador : jugadores) { //Recorre toda la lista de jugadores para asignarle 5 cartas a c/u
             for (int i = 0; i < cantidad; i++) {
-                if (!mazo.getMazo().isEmpty()) {
+                if (!mazo.getMazo().isEmpty()) { //Si el mazo no esta vacio
                     jugador.recibirCarta(mazo.getMazo().pop());
                 }
             }
@@ -43,4 +49,20 @@ public class Partida {
 
 
     }
+
+    public void colocarCartaInicial(){
+        if (!mazo.getMazo().isEmpty()){
+            mesa.colocarCarta(mazo.getMazo().pop());
+        }
+    }
+
+    public Carta getCartaCentral(){
+        return mesa.getCartaSuperior();
+    }
+
+
+
+
+
+
 }

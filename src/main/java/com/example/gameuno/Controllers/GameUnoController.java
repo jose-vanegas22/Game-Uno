@@ -20,6 +20,12 @@ public class GameUnoController {
     @FXML
     private HBox HBoxCartsMaquinaContainer;
 
+    @FXML
+    private ImageView ImagenViewCartasCentro;
+
+    @FXML
+    private ImageView imagenViewMazo;
+
     private Partida partida;
     private JugadorPersona jugador;
     private JugadorMaquina maquina;
@@ -32,7 +38,7 @@ public class GameUnoController {
 
         // Crear partida y jugador
         partida = new Partida();
-        jugador = new JugadorPersona("Jugador 1");
+        jugador = new JugadorPersona("Jugador");
         maquina = new JugadorMaquina("Máquina");
 
         partida.agregarJugador(jugador);
@@ -45,6 +51,13 @@ public class GameUnoController {
 
         //Mostrar las cartas de la maquina
         mostrarCartasMaquina(maquina.getMano().size());
+
+        //Muestra la primer carta en el centro sacada del mazo
+        partida.colocarCartaInicial();
+        mostrarCartaCentro(partida.getCartaCentral());
+
+        //Permite mostrar la imagen del mazo
+        mostrarMazo();
     }
 
     public void mostrarCartas(List<Carta> cartas) {
@@ -74,5 +87,23 @@ public class GameUnoController {
             imageView.setPreserveRatio(true);
             HBoxCartsMaquinaContainer.getChildren().add(imageView);
         }
+    }
+
+    public void mostrarCartaCentro(Carta carta) {
+        if(carta != null) {
+            String ruta = "/com/example/gameuno/Images/Cards-uno/" + carta.getNombreArchivo();
+            Image image = new Image(getClass().getResource(ruta).toExternalForm());
+            ImagenViewCartasCentro.setImage(image);
+        }
+    }
+
+    //Permite mostrar la imagen del mazo
+    public void mostrarMazo(){
+        String ruta = "/com/example/gameuno/Images/Cards-uno/deck_of_cards.png";
+        Image image = new Image(getClass().getResource(ruta).toExternalForm());
+        imagenViewMazo.setImage(image);
+        imagenViewMazo.setVisible(true);
+        imagenViewMazo.setFitWidth(60);
+        imagenViewMazo.setPreserveRatio(true);
     }
 }
