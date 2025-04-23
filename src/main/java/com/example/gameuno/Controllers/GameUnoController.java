@@ -2,6 +2,7 @@ package com.example.gameuno.Controllers;
 
 import com.example.gameuno.Models.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -25,6 +26,9 @@ public class GameUnoController {
 
     @FXML
     private ImageView imagenViewMazo;
+
+    @FXML
+    private Label LabelNombreJugador;
 
     private Partida partida;
     private JugadorPersona jugador;
@@ -55,6 +59,18 @@ public class GameUnoController {
         //Muestra la primer carta en el centro sacada del mazo
         partida.colocarCartaInicial();
         mostrarCartaCentro(partida.getCartaCentral());
+
+
+        //Esta parte lo que hace es que se puede sacar una carta del mazo y agregarla a la mano
+        imagenViewMazo.setOnMouseClicked((event) -> {
+           if(partida.getMazoUno().isEmpty()) {
+               Carta cartaSacada = partida.getMazoUno().getMazo().pop();
+               jugador.recibirCarta(cartaSacada);
+               mostrarCartas(jugador.getMano());
+
+               System.out.println("Mano actual del jugador: " + jugador.getMano());
+           }
+        });
 
         //Permite mostrar la imagen del mazo
         mostrarMazo();
@@ -105,5 +121,13 @@ public class GameUnoController {
         imagenViewMazo.setVisible(true);
         imagenViewMazo.setFitWidth(60);
         imagenViewMazo.setPreserveRatio(true);
+    }
+
+    public void setJugador(JugadorPersona jugador) {
+        this.jugador = jugador;
+    }
+
+    public void mostrarNombreJugador(){
+        LabelNombreJugador.setText(jugador.getNombre());
     }
 }

@@ -99,7 +99,9 @@ public class MazoUno {
     }
 
 
-
+    public boolean isEmpty() {
+        return true;
     }
+}
 
 

@@ -1,5 +1,6 @@
 package com.example.gameuno.Views;
 
+import com.example.gameuno.Controllers.GameUnoController;
 import com.example.gameuno.Main;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,12 +10,19 @@ import java.io.IOException;
 
 public class GameUnoView extends Stage {
 
+    private GameUnoController controller;
+
     public GameUnoView() throws IOException{
         FXMLLoader loader = new FXMLLoader(Main.class.getResource
                 ("/com/example/gameuno/GameUno.fxml"));
         Scene scene = new Scene(loader.load());
+        this.controller = loader.getController();
         this.setTitle("Game Uno");
         this.setScene(scene);
+    }
+
+    public GameUnoController getController() {
+        return controller;
     }
 
 
