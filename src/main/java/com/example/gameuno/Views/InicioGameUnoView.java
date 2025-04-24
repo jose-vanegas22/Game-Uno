@@ -7,6 +7,13 @@ import com.example.gameuno.Main;
 
 import java.io.IOException;
 
+/**
+ *This class represents the view of the game start interface, it loads the interface
+ *
+ * @author vaneg
+ * @author Alejandro Medina
+ * @version 1.0
+ */
 public class InicioGameUnoView extends Stage {
 
     public InicioGameUnoView() throws IOException {

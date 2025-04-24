@@ -2,7 +2,13 @@ package com.example.gameuno.Models;
 
 import javafx.scene.image.Image;
 
-
+/**
+ * This class Card contains its attributes such as color, valor, nombreArchivo and getters
+ *
+ * @author vaneg
+ * @author Alejandro Medina
+ * @version 1.0
+ */
 public class Carta {
 
     private String color;

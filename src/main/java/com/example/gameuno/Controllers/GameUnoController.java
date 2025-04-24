@@ -10,6 +10,14 @@ import javafx.scene.layout.VBox;
 
 import java.util.List;
 
+/**
+ * This class GameUnoController manages the interaction between the GameUno.fxml interface and the
+ * game logic. it updates the interface according to the actions that occur
+ *
+ * @author vaneg
+ * @author Alejandro Medina
+ * @version 1.0
+ */
 public class GameUnoController {
 
     @FXML
@@ -31,10 +39,14 @@ public class GameUnoController {
     private Label LabelNombreJugador;
 
     private Partida partida;
-    private JugadorPersona jugador;
+    private JugadorPersona jugadorPersona;
     private JugadorMaquina maquina;
 
 
+    /**
+     * This method runs first when entering this interface, it adds a background image and initializes
+     * everything needed to start the game
+     */
     public void initialize() {
 
         String imagePath = getClass().getResource("/com/example/gameuno/Images/FondoUno.png").toExternalForm();
@@ -42,16 +54,16 @@ public class GameUnoController {
 
         // Crear partida y jugador
         partida = new Partida();
-        jugador = new JugadorPersona("Jugador");
+        jugadorPersona = new JugadorPersona("Jugador");
         maquina = new JugadorMaquina("Máquina");
 
-        partida.agregarJugador(jugador);
+        partida.agregarJugador(jugadorPersona);
         partida.agregarJugador(maquina);
 
         partida.iniciarPartida();
 
         // Mostrar las cartas del jugador
-        mostrarCartas(jugador.getMano());
+        mostrarCartas(jugadorPersona.getMano());
 
         //Mostrar las cartas de la maquina
         mostrarCartasMaquina(maquina.getMano().size());
@@ -65,10 +77,10 @@ public class GameUnoController {
         imagenViewMazo.setOnMouseClicked((event) -> {
            if(partida.getMazoUno().isEmpty()) {
                Carta cartaSacada = partida.getMazoUno().getMazo().pop();
-               jugador.recibirCarta(cartaSacada);
-               mostrarCartas(jugador.getMano());
+               jugadorPersona.recibirCarta(cartaSacada);
+               mostrarCartas(jugadorPersona.getMano());
 
-               System.out.println("Mano actual del jugador: " + jugador.getMano());
+               System.out.println("Mano actual del jugador: " + jugadorPersona.getMano());
            }
         });
 
@@ -76,6 +88,12 @@ public class GameUnoController {
         mostrarMazo();
     }
 
+
+    /**
+     * This method clears the container where the cards will be placed, and using a for-each loop, it goes
+     * through the entire array of cards and adds them to the player's container
+     * @param cartas
+     */
     public void mostrarCartas(List<Carta> cartas) {
         HBoxCartsContainer.getChildren().clear();  // Limpia antes de añadir nuevas
 
@@ -90,6 +108,12 @@ public class GameUnoController {
     }
 
 
+    /**
+     * This method clears the container where the cards will be placed, and using a for-each loop, it goes
+     * through the entire array of cards and adds them macine container but it only adds back-facing cards
+     * visually
+     * @param cantidadCartas
+     */
     public void mostrarCartasMaquina(int cantidadCartas) {
         HBoxCartsMaquinaContainer.getChildren().clear();
 
@@ -105,6 +129,10 @@ public class GameUnoController {
         }
     }
 
+    /**
+     * This method recives a card, finds its image, and places it in the center of the table
+     * @param carta
+     */
     public void mostrarCartaCentro(Carta carta) {
         if(carta != null) {
             String ruta = "/com/example/gameuno/Images/Cards-uno/" + carta.getNombreArchivo();
@@ -113,6 +141,9 @@ public class GameUnoController {
         }
     }
 
+    /**
+     * This method displays an image that represents the deck
+     */
     //Permite mostrar la imagen del mazo
     public void mostrarMazo(){
         String ruta = "/com/example/gameuno/Images/Cards-uno/deck_of_cards.png";
@@ -123,11 +154,18 @@ public class GameUnoController {
         imagenViewMazo.setPreserveRatio(true);
     }
 
+    /**
+     * This method receives a player of type JugadorPersona and stores it in the jugador atribute
+     * @param jugador
+     */
     public void setJugador(JugadorPersona jugador) {
-        this.jugador = jugador;
+        this.jugadorPersona = jugador;
     }
 
+    /**
+     * This method displays the name of JugadorPersona in label
+     */
     public void mostrarNombreJugador(){
-        LabelNombreJugador.setText(jugador.getNombre());
+        LabelNombreJugador.setText(jugadorPersona.getNombre());
     }
 }

@@ -7,6 +7,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This class represents the view of the game instructions interface, it loads the interface
+ *
+ * @author vaneg
+ * @author Alejandro Medina
+ * @version 1.0
+ */
 public class InstruccionesView extends Stage {
 
     public InstruccionesView() throws IOException {

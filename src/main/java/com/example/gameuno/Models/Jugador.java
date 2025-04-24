@@ -3,6 +3,13 @@ package com.example.gameuno.Models;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class Jugador contains its attributes such a nombre and a list of cards
+ *
+ * @author vaneg
+ * @author Alejandro Medina
+ * @version 1.0
+ */
 public class Jugador {
 
     private String nombre;
@@ -13,6 +20,10 @@ public class Jugador {
         this.mano = new ArrayList<>();
     }
 
+    /**
+     *This method is used to add a card to the player's hand
+     * @param carta
+     */
     //Este metodo sirve para añadir una carta a la mano del jugador
     public void recibirCarta(Carta carta) {
         this.mano.add(carta);
@@ -22,7 +33,11 @@ public class Jugador {
         return nombre;
     }
 
-    //El metodo muestra las cartas que tiene el jugador en mano
+    /**
+     *This method dissplays the cards the player has in their hand
+     * @return
+     */
+    //Este metodo muestra las cartas que tiene el jugador en mano
     public List<Carta> getMano() {
         return mano;
     }

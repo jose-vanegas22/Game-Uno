@@ -8,6 +8,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This class represents the game interface view, it loads the interface and assigns the controller
+ *
+ * @author vaneg
+ * @author Alejandro Medina
+ * @version 1.0
+ */
 public class GameUnoView extends Stage {
 
     private GameUnoController controller;

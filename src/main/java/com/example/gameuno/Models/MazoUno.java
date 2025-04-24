@@ -6,6 +6,13 @@ import javafx.stage.Stage;
 import java.util.Collections;
 import java.util.Stack;
 
+/**
+ *This class MazoUno contains a stack that stores the cards
+ *
+ * @author vaneg
+ * @author Alejandro Medina
+ * @version 1.0
+ */
 public class MazoUno {
 
 
@@ -17,6 +24,10 @@ public class MazoUno {
     }
 
 
+    /**
+     * This method prepares the deck by storing the location of the cards, combining the contents of two
+     * arrays, and using two nested for-each loops to create all possible combinations
+     */
     //Este metodo es el que crear el mazo, guardando cada combinacion posible y aceptable en la pila mazo
     private void prepararMazo() {
 

@@ -20,6 +20,10 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 
+/**
+ * This class InicioGameUnoController handles the interaction and initialization of the
+ * start interface
+ */
 public class InicioGameUnoController {
 
     @FXML
@@ -40,6 +44,11 @@ public class InicioGameUnoController {
     @FXML
     private Label LabelMensaje;
 
+
+    /**
+     * This method is the first to be executed in this interface, it adds a background image and runs
+     * the animation of a card
+     */
     public void initialize() {
         String imagePath = getClass().getResource("/com/example/gameuno/Images/FondoUno.png").toExternalForm();
         VboxPrincipal.setStyle("-fx-background-image: url('" + imagePath + "'); -fx-background-size: cover;");
@@ -55,6 +64,9 @@ public class InicioGameUnoController {
         animarCarta();
     }
 
+    /**
+     * this method animates the card to make in move
+     */
     //Este metodo anima la carta para que tenga un movimiento
     public void animarCarta() {
         ImageView cartaFrontal = (ImageView) ContenedorCarta.lookup("#cartaFrontal");
@@ -81,6 +93,13 @@ public class InicioGameUnoController {
         rotacion.play();
     }
 
+    /**
+     * Here, the event is handled when the start button is pressed. It validates that a name is entered
+     * and shows a confirmation alert. If 'OK' is pressed, it enters the game interface; else
+     * it displays a message
+     * @param actionEvent
+     * @throws IOException
+     */
     @FXML
     void onActionIniciarBoton(ActionEvent actionEvent) throws IOException {
         String nombre = TextFieldNombre.getText().trim(); //Captura el nombre y lo guarda en la variable, trim elimina los espacios
@@ -110,6 +129,12 @@ public class InicioGameUnoController {
         }
     }
 
+
+    /**
+     * here the event when the instruction button is pressed, it enters the instruction interface
+     * @param actionEvent
+     * @throws IOException
+     */
     @FXML
     void onActionInstruccionesBoton (ActionEvent actionEvent) throws IOException {
         InstruccionesView instruccionesView = InstruccionesView.getInstance();
