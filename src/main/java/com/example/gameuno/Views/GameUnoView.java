@@ -1,5 +1,6 @@
 package com.example.gameuno.Views;
 
+import com.example.gameuno.Controllers.GameUnoController;
 import com.example.gameuno.Main;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -7,14 +8,28 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This class represents the game interface view, it loads the interface and assigns the controller
+ *
+ * @author vaneg
+ * @author Alejandro Medina
+ * @version 1.0
+ */
 public class GameUnoView extends Stage {
+
+    private GameUnoController controller;
 
     public GameUnoView() throws IOException{
         FXMLLoader loader = new FXMLLoader(Main.class.getResource
                 ("/com/example/gameuno/GameUno.fxml"));
         Scene scene = new Scene(loader.load());
+        this.controller = loader.getController();
         this.setTitle("Game Uno");
         this.setScene(scene);
+    }
+
+    public GameUnoController getController() {
+        return controller;
     }
 
 

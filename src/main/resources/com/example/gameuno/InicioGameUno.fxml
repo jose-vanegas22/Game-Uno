@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="VboxPrincipal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gameuno.Controllers.InicioGameUnoController">
+   <children>
+      <HBox alignment="TOP_CENTER" prefHeight="79.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+         <children>
+            <StackPane fx:id="ContenedorCarta" prefHeight="70.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="cartaFrontal" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="cartaTrasera" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </StackPane>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="183.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+         <children>
+            <HBox alignment="CENTER" prefHeight="185.0" prefWidth="492.0" spacing="7.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label rotate="-30.0" text="U" textFill="#c10b0b" translateX="28.0" translateY="-20.0">
+                     <font>
+                        <Font name="Arial Black" size="75.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="-6.0" top="-6.0" />
+                     </padding>
+                     <effect>
+                        <DropShadow spread="0.5" />
+                     </effect>
+                  </Label>
+                  <Label text="N" textFill="#c10b0b" translateX="58.0" translateY="-30.0">
+                     <font>
+                        <Font name="Arial Black" size="75.0" />
+                     </font>
+                     <effect>
+                        <DropShadow spread="0.5" />
+                     </effect>
+                  </Label>
+                  <Label rotate="30.0" text="O" textFill="#c10b0b" translateX="88.0" translateY="-20.0">
+                     <font>
+                        <Font name="Arial Black" size="75.0" />
+                     </font>
+                     <effect>
+                        <DropShadow spread="0.5" />
+                     </effect>
+                  </Label>
+               </children>
+            </HBox>
+            <VBox alignment="CENTER" prefHeight="185.0" prefWidth="202.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#onActionIniciarBoton" style="-fx-background-color: #FFD700; -fx-background-radius: 5px; -fx-border-color: black; -fx-border-radius: 5px; -fx-border-width: 2px;" text="INICIAR">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Arial Black" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionInstruccionesBoton" style="-fx-background-color: #FFD700; -fx-background-radius: 5px; -fx-border-color: black; -fx-border-radius: 5px; -fx-border-width: 2px;" text="INSTRUCCIONES">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Arial Black" size="13.0" />
+                     </font>
+                  </Button>
+               </children>
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+      </HBox>
+      <VBox alignment="TOP_CENTER" prefHeight="113.0" prefWidth="600.0">
+         <children>
+            <Label text="INGRESA TU APODO" textFill="WHITE">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Arial Black" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="TextFieldNombre" alignment="CENTER" prefHeight="26.0" prefWidth="342.0">
+               <VBox.margin>
+                  <Insets left="120.0" right="120.0" top="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Arial Black" size="13.0" />
+               </font>
+            </TextField>
+            <Label fx:id="LabelMensaje" text="BIENVENIDO" textFill="WHITE">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+   </children>
+</VBox>

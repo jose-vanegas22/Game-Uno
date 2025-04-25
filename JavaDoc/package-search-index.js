@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"com.example.gameuno","l":"com.example.gameuno"},{"m":"com.example.gameuno","l":"com.example.gameuno.Controllers"},{"m":"com.example.gameuno","l":"com.example.gameuno.Models"},{"m":"com.example.gameuno","l":"com.example.gameuno.Views"}];updateSearchResults();
