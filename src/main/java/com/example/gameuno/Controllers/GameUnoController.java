@@ -63,7 +63,7 @@ public class GameUnoController {
         partida.iniciarPartida();
 
         // Mostrar las cartas del jugador
-        mostrarCartas(jugadorPersona.getMano());
+        mostrarCartasPersona();
 
         //Mostrar las cartas de la maquina
         mostrarCartasMaquina(maquina.getMano().size());
@@ -73,16 +73,19 @@ public class GameUnoController {
         mostrarCartaCentro(partida.getCartaCentral());
 
 
+
+        /**
         //Esta parte lo que hace es que se puede sacar una carta del mazo y agregarla a la mano
         imagenViewMazo.setOnMouseClicked((event) -> {
            if(partida.getMazoUno().isEmpty()) {
                Carta cartaSacada = partida.getMazoUno().getMazo().pop();
                jugadorPersona.recibirCarta(cartaSacada);
-               mostrarCartas(jugadorPersona.getMano());
+               //mostrarCartasPersona(jugadorPersona.getMano());
 
                System.out.println("Mano actual del jugador: " + jugadorPersona.getMano());
            }
         });
+         **/
 
         //Permite mostrar la imagen del mazo
         mostrarMazo();
@@ -92,20 +95,45 @@ public class GameUnoController {
     /**
      * This method clears the container where the cards will be placed, and using a for-each loop, it goes
      * through the entire array of cards and adds them to the player's container
-     * @param cartas
+     * @param
      */
-    public void mostrarCartas(List<Carta> cartas) {
-        HBoxCartsContainer.getChildren().clear();  // Limpia antes de añadir nuevas
+    public void mostrarCartasPersona() {
+        //HBoxCartsContainer.getChildren().clear();
+        List<Carta> mano = jugadorPersona.getMano();  // Lista actual del jugador
 
-        for (Carta carta : cartas) {
+        for (Carta  carta : mano) {
             String ruta = "/com/example/gameuno/Images/Cards-uno/" + carta.getNombreArchivo();
-            Image image = new Image(getClass().getResource(ruta).toExternalForm());
-            ImageView imageView = new ImageView(image);
+            ImageView imageView = new ImageView(new Image(getClass().getResource(ruta).toExternalForm()));
             imageView.setFitWidth(60);
             imageView.setPreserveRatio(true);
-            HBoxCartsContainer.getChildren().add(imageView);
+
+            imageView.setOnMouseClicked(event -> {
+                MesaDeJuego mesa = partida.getMesa();
+                if (mesa.ponerCartaColorNumero(carta)) {
+                    mesa.colocarCarta(carta); // Mover la carta a la pila cartasJugadas
+                    System.out.println("DEBUG - Mano antes de eliminar: " + mano);
+                    mano.remove(carta);  // Elimina la carta de la mano del jugador
+                    HBoxCartsContainer.getChildren().remove(imageView); // La quita visualmente
+                    System.out.println("DEBUG - Mano despues de eliminar: " + mano);
+                    mostrarCartasPersona();  // Muestra la mano actualizada
+                    mostrarCartaCentro(carta); // Muestra la carta de la mano al centro
+                }
+            });
+            HBoxCartsContainer.getChildren().add(imageView); // Añade las cartas al contenedor
         }
     }
+
+
+
+    private void robarCartaDelMazo(){
+        imagenViewMazo.setOnMouseClicked(event -> {
+            if(!partida.getMazoUno().isEmpty()){
+
+            }
+        });
+    }
+
+
 
 
     /**
@@ -138,6 +166,7 @@ public class GameUnoController {
             String ruta = "/com/example/gameuno/Images/Cards-uno/" + carta.getNombreArchivo();
             Image image = new Image(getClass().getResource(ruta).toExternalForm());
             ImagenViewCartasCentro.setImage(image);
+            System.out.println("Carta del centro: " + carta.getNombreArchivo());
         }
     }
 

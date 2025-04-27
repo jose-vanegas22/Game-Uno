@@ -43,6 +43,7 @@ public class MazoUno {
         }
 
 
+        /**
         //Esta parte añade la carta +2 dos veces por cada color
         String[] colores2 = {"wild_draw_blue", "wild_draw_green", "wild_draw_red", "wild_draw_yellow"};
         String[] valores2 = {"2"};
@@ -99,6 +100,7 @@ public class MazoUno {
                 }
             }
         }
+         **/
 
         //Al final cuando ya la pila esta creada aqui se reorganiza de forma aleatoria
         Collections.shuffle(mazo);

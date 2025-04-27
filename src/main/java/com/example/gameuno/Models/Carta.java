@@ -44,4 +44,8 @@ public class Carta {
         return valor + "_" + color + ".png";
     }
 
+
+
+
+
 }
