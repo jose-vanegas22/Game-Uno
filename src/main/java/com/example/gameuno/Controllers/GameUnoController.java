@@ -89,7 +89,10 @@ public class GameUnoController {
 
         //Permite mostrar la imagen del mazo
         mostrarMazo();
+
+        robarCartaDelMazo();
     }
+
 
 
     /**
@@ -97,6 +100,8 @@ public class GameUnoController {
      * through the entire array of cards and adds them to the player's container
      * @param
      */
+
+
     public void mostrarCartasPersona() {
         //HBoxCartsContainer.getChildren().clear();
         List<Carta> mano = jugadorPersona.getMano();  // Lista actual del jugador
@@ -125,13 +130,27 @@ public class GameUnoController {
 
 
 
-    private void robarCartaDelMazo(){
-        imagenViewMazo.setOnMouseClicked(event -> {
-            if(!partida.getMazoUno().isEmpty()){
 
+    private void robarCartaDelMazo(){
+        List<Carta> mano = jugadorPersona.getMano();
+        imagenViewMazo.setOnMouseClicked(event -> {
+            MazoUno mazo = partida.getMazoUno();
+            System.out.println("Debug - Cartas en mazo: " + mazo.cantidadCartas() +
+                    " | ¿Vacío?: " + mazo.isEmpty());
+            if(!mazo.isEmpty()){
+                Carta cartaSacada = mazo.robarCarta();
+                jugadorPersona.recibirCarta(cartaSacada);
+                System.out.println("Cartas de persona recibida: " + jugadorPersona.getMano());
+                mostrarCartasPersona();
+                System.out.println("Carta robada: " + cartaSacada.getNombreArchivo() +
+                        " | Restantes: " + mazo.cantidadCartas());
+                System.out.println("Mano del jugador 2: " + jugadorPersona.getMano());
+            } else{
+                System.out.println("El mazo esta vacio");
             }
         });
     }
+
 
 
 

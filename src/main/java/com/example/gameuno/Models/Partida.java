@@ -66,6 +66,7 @@ public class Partida {
         // Reparte 5 cartas a cada jugador
         repartirCartasIniciales(5);
 
+
         // Mostrar las cartas de cada jugador en consola
         for (Jugador jugador : jugadores) {
             System.out.println("Cartas de " + jugador.getNombre() + " (" + jugador.getClass().getSimpleName() + "):");
@@ -102,7 +103,7 @@ public class Partida {
      */
     public MazoUno getMazoUno(){
 
-        return mazoUno;
+        return this.mazoUno;
     }
 
     public MesaDeJuego getMesa(){
