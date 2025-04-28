@@ -111,6 +111,18 @@ public class Partida {
     }
 
 
+    /**
+     * This method allows any other class to request the player without creating new instances
+     * @return
+     */
+    public JugadorPersona getJugadorPersona() {
+        for (Jugador jugador : jugadores) { // Recorre toda la lista de jugadores
+            if (jugador instanceof JugadorPersona) { // Aqui se pregunta si jugador es una instancia de JugadorPersona
+                return (JugadorPersona) jugador; // Hace un casteo, fuerza a java a entender que jugador es de tipo JugadorPersona, a Java le toca confiar
+            }
+        }
+        return null; // No encontrado
+    }
 
 
 
