@@ -16,7 +16,7 @@ import java.util.Stack;
 public class MazoUno {
 
 
-        Stack<Carta> mazo = new Stack<>(); //Pila la cual contiene el maso, funciona con logica LIFO
+    Stack<Carta> mazo = new Stack<>(); //Pila la cual contiene el maso, funciona con logica LIFO
 
     public MazoUno() {
         mazo = new Stack<>(); //Aqui se inicializa la pila
@@ -43,6 +43,7 @@ public class MazoUno {
         }
 
 
+        /**
         //Esta parte añade la carta +2 dos veces por cada color
         String[] colores2 = {"wild_draw_blue", "wild_draw_green", "wild_draw_red", "wild_draw_yellow"};
         String[] valores2 = {"2"};
@@ -99,6 +100,7 @@ public class MazoUno {
                 }
             }
         }
+         **/
 
         //Al final cuando ya la pila esta creada aqui se reorganiza de forma aleatoria
         Collections.shuffle(mazo);
@@ -111,7 +113,15 @@ public class MazoUno {
 
 
     public boolean isEmpty() {
-        return true;
+        return this.mazo.isEmpty();
+    }
+
+    public Carta robarCarta() {
+        return this.mazo.pop(); // Saca la carta de la pila y la elimina
+    }
+
+    public int cantidadCartas() {
+        return this.mazo.size();
     }
 }
 

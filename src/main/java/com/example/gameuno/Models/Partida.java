@@ -47,7 +47,9 @@ public class Partida {
         for (Jugador jugador : jugadores) { //Recorre toda la lista de jugadores para asignarle 5 cartas a c/u
             for (int i = 0; i < cantidad; i++) {
                 if (!mazoUno.getMazo().isEmpty()) { //Si el mazo no esta vacio
-                    jugador.recibirCarta(mazoUno.getMazo().pop()); //.pop saca una carta y la elimina de la pila
+                    Carta cartaRepartida = mazoUno.getMazo().pop();
+                    jugador.recibirCarta(cartaRepartida); //.pop saca una carta y la elimina de la pila
+                    System.out.println("Carta repartida a " + jugador.getNombre() + ": " + cartaRepartida);
                 }
             }
         }
@@ -57,8 +59,13 @@ public class Partida {
      *
      */
     public void iniciarPartida() {
+
+        System.out.println("Cartas en el mazo antes de repartir: " + mazoUno.getMazo().size());
+
+
         // Reparte 5 cartas a cada jugador
         repartirCartasIniciales(5);
+
 
         // Mostrar las cartas de cada jugador en consola
         for (Jugador jugador : jugadores) {
@@ -96,7 +103,11 @@ public class Partida {
      */
     public MazoUno getMazoUno(){
 
-        return mazoUno;
+        return this.mazoUno;
+    }
+
+    public MesaDeJuego getMesa(){
+        return mesa;
     }
 
 

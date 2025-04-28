@@ -20,6 +20,7 @@ public class MesaDeJuego {
     //Este metodo lo que hace es poner o agregar una carta en la pila o mesa en este caso
     public void colocarCarta(Carta carta) {
         cartasJugadas.push(carta);
+        System.out.println("Cartas de la pila: " + cartasJugadas);
     }
 
     /**
@@ -30,9 +31,22 @@ public class MesaDeJuego {
     //Se pone public Carta porque va a retornar un objeto tipo carta
     public Carta getCartaSuperior(){
         if (!cartasJugadas.isEmpty()){
-            return cartasJugadas.pop();
+            return cartasJugadas.peek();
         }
         return null;
+    }
+
+    //Este metodo lo que hace es igualar el color y numero de la carta nueva con la anterior para saber
+    //si se puede colocar o no
+    public boolean ponerCartaColorNumero(Carta cartaActual){
+        Carta cartaSuperior = getCartaSuperior();
+
+        System.out.println("Comparando: " +
+                "Centro=" + cartaSuperior.getValor() + "_" + cartaSuperior.getColor() + " vs " +
+                "Jugada=" + cartaActual.getValor() + "_" + cartaActual.getColor());
+
+        return cartaActual.getColor().equals(cartaSuperior.getColor()) ||
+                cartaActual.getValor().equals(cartaSuperior.getValor());
     }
 
 }
