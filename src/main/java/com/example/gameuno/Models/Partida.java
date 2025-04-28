@@ -66,6 +66,7 @@ public class Partida {
         // Reparte 5 cartas a cada jugador
         repartirCartasIniciales(5);
 
+
         // Mostrar las cartas de cada jugador en consola
         for (Jugador jugador : jugadores) {
             System.out.println("Cartas de " + jugador.getNombre() + " (" + jugador.getClass().getSimpleName() + "):");
@@ -102,7 +103,7 @@ public class Partida {
      */
     public MazoUno getMazoUno(){
 
-        return mazoUno;
+        return this.mazoUno;
     }
 
     public MesaDeJuego getMesa(){
@@ -110,6 +111,18 @@ public class Partida {
     }
 
 
+    /**
+     * This method allows any other class to request the player without creating new instances
+     * @return
+     */
+    public JugadorPersona getJugadorPersona() {
+        for (Jugador jugador : jugadores) { // Recorre toda la lista de jugadores
+            if (jugador instanceof JugadorPersona) { // Aqui se pregunta si jugador es una instancia de JugadorPersona
+                return (JugadorPersona) jugador; // Hace un casteo, fuerza a java a entender que jugador es de tipo JugadorPersona, a Java le toca confiar
+            }
+        }
+        return null; // No encontrado
+    }
 
 
 

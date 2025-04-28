@@ -16,7 +16,7 @@ import java.util.Stack;
 public class MazoUno {
 
 
-        Stack<Carta> mazo = new Stack<>(); //Pila la cual contiene el maso, funciona con logica LIFO
+    Stack<Carta> mazo = new Stack<>(); //Pila la cual contiene el maso, funciona con logica LIFO
 
     public MazoUno() {
         mazo = new Stack<>(); //Aqui se inicializa la pila
@@ -113,7 +113,15 @@ public class MazoUno {
 
 
     public boolean isEmpty() {
-        return true;
+        return this.mazo.isEmpty();
+    }
+
+    public Carta robarCarta() {
+        return this.mazo.pop(); // Saca la carta de la pila y la elimina
+    }
+
+    public int cantidadCartas() {
+        return this.mazo.size();
     }
 }
 
