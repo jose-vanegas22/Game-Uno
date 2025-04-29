@@ -17,6 +17,8 @@ public class Partida {
     private List<Jugador> jugadores;
     private Carta cartaCentral;
     private MesaDeJuego mesa;
+    private int turnoActual = 0; // 0 = JugadorPersona, 1 = JugadorMaquina
+    private boolean partiaIniciada = false; // Variable para saber si la partida esta en curso o termino
 
 
     /**
@@ -125,6 +127,103 @@ public class Partida {
     }
 
 
+    public JugadorMaquina getJugadorMaquina() {
+        for (Jugador jugador : jugadores) {
+            if (jugador instanceof JugadorMaquina) {
+                return (JugadorMaquina) jugador;
+            }
+        }
+        return null;
+    }
+
+
+    //- - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Metodos que sirven para los turnos en el juego
+
+    public boolean turnoJugadorPersona(Carta carta){
+        JugadorPersona jugadorPersona = getJugadorPersona();
+       // if (!esTurnoHumano() || !partiaIniciada) return false;
+
+        if (mesa.ponerCartaColorNumero(carta)){
+            mesa.colocarCarta(carta);
+            System.out.println("DEBUG - Mano antes de eliminar: " + jugadorPersona.getMano());
+            jugadorPersona.getMano().remove(carta);
+            System.out.println("DEBUG - Mano despues de eliminar: " + jugadorPersona.getMano());
+            //pasarTurno();
+            return true;
+        }
+        return false;
+    }
+
+
+    public Carta robarCartaJugadorPersona(){
+
+        if (esTurnoHumano() && partiaIniciada && !mazoUno.isEmpty()) {
+            Carta cartaRobada = mazoUno.robarCarta();
+            JugadorPersona jugadorPersona = getJugadorPersona();
+
+            if(jugadorPersona != null) {
+                jugadorPersona.recibirCarta(cartaRobada);
+
+                System.out.println("Mano del jugadorPersona antes de robar: " + jugadorPersona.getMano());
+                System.out.println("Carta robada: " + cartaRobada);
+
+                pasarTurno(); // Cuando se saca una carta del mazo de una se cambia el turno
+
+                System.out.println("Mano del jugadorPersona despues de robar: " +  jugadorPersona.getMano());
+                return cartaRobada;
+
+            }
+        }
+        return null;
+    }
+
+    public Carta robarCartaJugadorPersona2(){
+        Carta cartaRobada = mazoUno.robarCarta();
+
+        JugadorPersona jugadorPersona = getJugadorPersona();
+        jugadorPersona.recibirCarta(cartaRobada);
+
+        System.out.println("Carta robada: " + cartaRobada);
+        System.out.println("Nueva mano: " + jugadorPersona.getMano());
+
+        return cartaRobada;
+    }
+
+    public void turnoMaquina(){
+        if(!esTurnoMaquina() || !partiaIniciada) return;
+
+        JugadorMaquina jugadorMaquina = getJugadorMaquina();
+        Carta cartaCentral = mesa.getCartaSuperior();
+        Carta cartaJugada = jugadorMaquina.jugarCarta(cartaCentral);
+
+        if(cartaJugada != null) {
+           mesa.colocarCarta(cartaJugada);
+        } else{
+            Carta cartaRobada = mazoUno.robarCarta();
+            jugadorMaquina.recibirCarta(cartaRobada);
+            System.out.println("[Máquina] Robó carta: " + cartaRobada);
+        }
+        pasarTurno();
+    }
+
+
+    private void pasarTurno(){
+        turnoActual = 1 - turnoActual; // Metodo que cambia a otro turno entre 0 y 1
+    }
+
+
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Metodos para consultar a quien le toca el turno
+
+    public boolean esTurnoHumano(){
+        return turnoActual == 0;
+    }
+
+    public boolean esTurnoMaquina(){
+        return turnoActual == 1;
+    }
 
 
 }

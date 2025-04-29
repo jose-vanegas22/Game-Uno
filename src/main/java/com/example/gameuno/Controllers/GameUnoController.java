@@ -78,47 +78,6 @@ public class GameUnoController {
         // Preparar evento de robar carta
         robarCartaDelMazo();
 
-        /**
-        // Crear partida y jugador
-        partida = new Partida();
-        jugadorPersona = new JugadorPersona("Jugador");
-        maquina = new JugadorMaquina("Máquina");
-
-        partida.agregarJugador(jugadorPersona);
-        partida.agregarJugador(maquina);
-
-        partida.iniciarPartida();
-
-        // Mostrar las cartas del jugador
-        mostrarCartasPersona();
-
-        //Mostrar las cartas de la maquina
-        mostrarCartasMaquina(maquina.getMano().size());
-
-        //Muestra la primer carta en el centro sacada del mazo
-        partida.colocarCartaInicial();
-        mostrarCartaCentro(partida.getCartaCentral());
-
-
-
-        /**
-        //Esta parte lo que hace es que se puede sacar una carta del mazo y agregarla a la mano
-        imagenViewMazo.setOnMouseClicked((event) -> {
-           if(partida.getMazoUno().isEmpty()) {
-               Carta cartaSacada = partida.getMazoUno().getMazo().pop();
-               jugadorPersona.recibirCarta(cartaSacada);
-               //mostrarCartasPersona(jugadorPersona.getMano());
-
-               System.out.println("Mano actual del jugador: " + jugadorPersona.getMano());
-           }
-        });
-
-
-        //Permite mostrar la imagen del mazo
-        mostrarMazo();
-
-        robarCartaDelMazo();
-        **/
     }
 
 
@@ -142,16 +101,17 @@ public class GameUnoController {
             imageView.setFitWidth(60);
             imageView.setPreserveRatio(true);
 
+            // Evento para jugar cartas
             imageView.setOnMouseClicked(event -> {
-                MesaDeJuego mesa = partida.getMesa();
-                if (mesa.ponerCartaColorNumero(carta)) {
-                    mesa.colocarCarta(carta); // Mover la carta a la pila cartasJugadas
-                    System.out.println("DEBUG - Mano antes de eliminar: " + mano);
-                    mano.remove(carta);  // Elimina la carta de la mano del jugador
-                    HBoxCartsContainer.getChildren().remove(imageView); // La quita visualmente
-                    System.out.println("DEBUG - Mano despues de eliminar: " + mano);
-                    //mostrarCartasPersona();  // Muestra la mano actualizada
-                    mostrarCartaCentro(carta); // Muestra la carta de la mano al centro
+                System.out.println("Intentando jugar: " + carta.getNombreArchivo());
+                System.out.println("Carta central actual: " + partida.getCartaCentral().getNombreArchivo());
+                if(partida.turnoJugadorPersona(carta)){
+                    System.out.println("¡Jugada válida!");
+                    HBoxCartsContainer.getChildren().remove(imageView);
+                    mostrarCartaCentro(carta);
+                } else{
+                    System.out.println("Jugada no valida!!!!");
+
                 }
             });
 
@@ -160,48 +120,14 @@ public class GameUnoController {
     }
 
 
-
-
-    /**
-    private void robarCartaDelMazo(){
-        imagenViewMazo.setOnMouseClicked(event -> {
-            List<Carta> mano = jugadorPersona.getMano();
-            MazoUno mazo = partida.getMazoUno();
-            System.out.println("Mano del jugador antes de entrar al if: " + mano);
-            System.out.println("Debug - Cartas en mazo: " + mazo.cantidadCartas() +
-                    " | ¿Vacío?: " + mazo.isEmpty());
-            if(!mazo.isEmpty()){
-                System.out.println("Mano del jugador antes de sacar carta de mazo: " + jugadorPersona.getMano());
-                Carta cartaSacada = mazo.robarCarta();
-                jugadorPersona.recibirCarta(cartaSacada);
-                System.out.println("Cartas de persona recibida: " + jugadorPersona.getMano());
-                System.out.println("Carta robada: " + cartaSacada.getNombreArchivo() +
-                        " | Restantes: " + mazo.cantidadCartas());
-                System.out.println("Mano del jugador 2: " + jugadorPersona.getMano());
-                mostrarCartasPersona();
-            } else{
-                System.out.println("El mazo esta vacio");
-            }
-        });
-    }
-     **/
     private void robarCartaDelMazo() {
+        // Evento para sacar carta del mazo
         imagenViewMazo.setOnMouseClicked(event -> {
-            JugadorPersona jugador = partida.getJugadorPersona();
-            MazoUno mazo = partida.getMazoUno();
 
+            Carta cartaRobada = partida.robarCartaJugadorPersona2();
 
-            System.out.println("Mano del jugador antes de robar: " + jugador.getMano());
-
-            if (!mazo.isEmpty()) {
-                Carta cartaRobada = mazo.robarCarta();
-                jugador.recibirCarta(cartaRobada); // Aquí se agrega correctamente a la mano
-                System.out.println("Jugador persona robó: " + cartaRobada.getNombreArchivo());
-                System.out.println("Mano del jugador después de robar: " + jugador.getMano());
-
-                mostrarCartasPersona(); // Actualizar visualmente
-            } else {
-                System.out.println("El mazo está vacío, no se puede robar");
+            if(cartaRobada != null) {
+                mostrarCartasPersona();
             }
         });
     }
