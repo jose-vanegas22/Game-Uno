@@ -49,4 +49,19 @@ public class MesaDeJuego {
                 cartaActual.getValor().equals(cartaSuperior.getValor());
     }
 
+    // Permite acceder a la pila desde otras clases
+    public Stack<Carta> getCartasJugadas() {
+        return cartasJugadas;
+    }
+
+
+    public Stack<Carta> cartasQueSePuedenReciclar() {
+        Stack<Carta> cartasRecicladas =  new Stack<>();
+        cartasRecicladas.addAll( cartasJugadas );
+        if (!cartasRecicladas.isEmpty()){
+            cartasRecicladas.pop();
+        }
+        return cartasRecicladas;
+    }
+
 }

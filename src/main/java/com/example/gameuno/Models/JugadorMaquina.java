@@ -38,6 +38,7 @@ public class JugadorMaquina extends Jugador {
         // Si hay alguna carta en la lista de permitidas juega una de esas al azar
         if (!cartasPermitidas.isEmpty()){
             Carta cartaJugada = cartasPermitidas.get(random.nextInt(cartasPermitidas.size()));
+            System.out.println("La carta que la maquina acaba de jugar es: " + cartaJugada);
             this.getMano().remove(cartaJugada);
             return cartaJugada;
         }

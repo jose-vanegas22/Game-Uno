@@ -1,12 +1,18 @@
 package com.example.gameuno.Controllers;
 
 import com.example.gameuno.Models.*;
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 import java.util.List;
 
@@ -38,9 +44,13 @@ public class GameUnoController {
     @FXML
     private Label LabelNombreJugador;
 
+    @FXML
+    private Label labelTurno;
+
     private Partida partida;
     private JugadorPersona jugadorPersona;
-    private JugadorMaquina maquina;
+    private JugadorMaquina jugadorMaquina;
+
 
 
     /**
@@ -56,10 +66,10 @@ public class GameUnoController {
         // Crear partida y jugador
         partida = new Partida();
         jugadorPersona = new JugadorPersona("Jugador");
-        maquina = new JugadorMaquina("Máquina");
+        jugadorMaquina = new JugadorMaquina("Máquina");
 
         partida.agregarJugador(jugadorPersona);
-        partida.agregarJugador(maquina);
+        partida.agregarJugador(jugadorMaquina);
 
         // Iniciar partida (repartir cartas)
         partida.iniciarPartida();
@@ -70,13 +80,22 @@ public class GameUnoController {
 
         // Mostrar las cartas
         mostrarCartasPersona();
-        mostrarCartasMaquina(maquina.getMano().size());
+        mostrarCartasMaquina(jugadorMaquina.getMano().size()); // El argumento cantidasCartas es el tamaño de la mano del jugadorMaquina
 
         // Mostrar mazo
+        //imagenViewMazo.setVisible(true);
         mostrarMazo();
 
         // Preparar evento de robar carta
         robarCartaDelMazo();
+        manejarTurno();
+        //actualizarTurnoUI();
+
+        // Fuerza la actualización inicial
+        Platform.runLater(() -> {
+            habilitarInterfazHumano(partida.esTurnoJugadorPersona());
+            actualizarTurnoUI();
+        });
 
     }
 
@@ -87,28 +106,36 @@ public class GameUnoController {
      * through the entire array of cards and adds them to the player's container
      * @param
      */
-
-
     public void mostrarCartasPersona() {
         HBoxCartsContainer.getChildren().clear();
         //List<Carta> mano = jugadorPersona.getMano();  // Lista actual del jugador
-        JugadorPersona jugador = partida.getJugadorPersona();
+        JugadorPersona jugador = partida.getJugadorPersona(); // Se guarda el objeto del unico JugadorPersona que existe para siempre usar el mismo
         List<Carta> mano = jugador.getMano();
+
         System.out.println("DEBUG - Mano antes de mostrar cartas: " + mano);
+
+        // Con este For-each lo que se hace es recorrer toda la lista de la mano para crear visualmente su carta y ponerla en el contenedor
         for (Carta  carta : mano) {
             String ruta = "/com/example/gameuno/Images/Cards-uno/" + carta.getNombreArchivo();
             ImageView imageView = new ImageView(new Image(getClass().getResource(ruta).toExternalForm()));
             imageView.setFitWidth(60);
             imageView.setPreserveRatio(true);
 
-            // Evento para jugar cartas
+            // Evento para jugar cartas, evento justamente creado adentro para que cada que se cree una carta asignarle su propio evento
             imageView.setOnMouseClicked(event -> {
+
+                if(!partida.esTurnoJugadorPersona()) return;
+
                 System.out.println("Intentando jugar: " + carta.getNombreArchivo());
                 System.out.println("Carta central actual: " + partida.getCartaCentral().getNombreArchivo());
                 if(partida.turnoJugadorPersona(carta)){
                     System.out.println("¡Jugada válida!");
                     HBoxCartsContainer.getChildren().remove(imageView);
                     mostrarCartaCentro(carta);
+                    partida.pasarTurno();
+                    actualizarTurnoUI();
+                    manejarTurno();
+
                 } else{
                     System.out.println("Jugada no valida!!!!");
 
@@ -123,11 +150,15 @@ public class GameUnoController {
     private void robarCartaDelMazo() {
         // Evento para sacar carta del mazo
         imagenViewMazo.setOnMouseClicked(event -> {
+            if(!partida.esTurnoJugadorPersona()) return;
 
-            Carta cartaRobada = partida.robarCartaJugadorPersona2();
+            Carta cartaRobada = partida.robarCartaJugadorPersona();
 
             if(cartaRobada != null) {
                 mostrarCartasPersona();
+                partida.pasarTurno();
+                //actualizarTurnoUI();
+                manejarTurno();
             }
         });
     }
@@ -198,4 +229,78 @@ public class GameUnoController {
     public void mostrarNombreJugador(){
         LabelNombreJugador.setText(jugadorPersona.getNombre());
     }
+
+
+    public void manejarTurno(){
+
+
+        if (partida.esTurnoJugadorPersona()) {
+            habilitarInterfazHumano(true);
+            System.out.println(">> Turno JUGADOR - Esperando acción...");
+            // Solo esperar interacción del jugador
+        } else {
+            habilitarInterfazHumano(false);
+            System.out.println(">> Turno MÁQUINA - Jugando...");
+
+            boolean turnoCompletado = partida.turnoJugadorMaquina();
+
+            // Solo un turno de máquina por llamada
+            if (turnoCompletado) {
+                PauseTransition pause2 = new PauseTransition(Duration.seconds(2));
+                pause2.setOnFinished(event -> {
+            mostrarCartaCentro(partida.getCartaCentral());
+            mostrarCartasMaquina(partida.getJugadorMaquina().getMano().size());
+                }); pause2.play();
+
+            // Pasar turno después de 3 segundos
+            PauseTransition pause = new PauseTransition(Duration.seconds(3));
+            pause.setOnFinished(event -> {
+                partida.pasarTurno();
+                manejarTurno(); // Manejar siguiente turno
+                actualizarTurnoUI();
+            });
+            pause.play();
+            } else{
+                System.err.println("Error: La máquina no pudo jugar");
+                partida.pasarTurno();  // Fuerza cambio si hay error
+                manejarTurno();
+                actualizarTurnoUI();
+            }
+        }
+    }
+
+    // Este metodo permite que sea visual o no la interfaz del JugadorPersona segun sea su parametro
+    private void habilitarInterfazHumano(boolean habilitado){
+
+        imagenViewMazo.setDisable(!habilitado);
+        imagenViewMazo.setVisible(true);
+        imagenViewMazo.setOpacity(habilitado ? 1.0 : 0.5); // "condicion ternaria", forma de evaluar de manera compacta (Si es true : Si es false)
+
+        // 2. Estado de las cartas del jugador
+        for (Node cartaNode : HBoxCartsContainer.getChildren()) {
+            if (cartaNode != null) {
+                cartaNode.setDisable(!habilitado);
+                cartaNode.setOpacity(habilitado ? 1.0 : 0.5);
+                cartaNode.setEffect(habilitado ? new DropShadow(10, Color.GOLD) : null);
+            }
+        }
+
+        //actualizarTurnoUI();
+    }
+
+
+    // permite mantener actualizado un label para darse cuenta si es turno de JugadorPersona o JugadorMaquina
+    private void actualizarTurnoUI() {
+        javafx.application.Platform.runLater(() -> { // Para asegurarse que corra en el hilo principal y no existan problemas
+        if (partida.esTurnoJugadorPersona()) {
+            labelTurno.setText("Tu turno");
+            labelTurno.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+        } else {
+            labelTurno.setText("Turno de la máquina");
+            labelTurno.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+        }
+        System.out.println("Turno actualizado: " + labelTurno.getText());
+        });
+    }
+
 }
