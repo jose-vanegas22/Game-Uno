@@ -111,7 +111,7 @@ public class MazoUno {
         return mazo;
     }
 
-
+    // Retorna true si el mazo esta vacio
     public boolean isEmpty() {
         return this.mazo.isEmpty();
     }
@@ -123,6 +123,44 @@ public class MazoUno {
     public int cantidadCartas() {
         return this.mazo.size();
     }
-}
+
+    public void mazoVacioRecargarMazoCartasMeza(Stack<Carta> cartasRecicladas) {
+        if(isEmpty() && cartasRecicladas.size() > 0){ // Metodo boolean isEmpty y asegura que existan cartas en la pila cartas recicladas
+
+            //Stack<Carta> cartasDeLaMesa = mesaDeJuego.getCartasJugadas();
+
+            // Guarda la ultima carta de la mesa y la elimina de esa pila (Se hace para luego de que se
+            // quiten todas las cartas volverla a poner en la pila MesaDeJuego)
+            Carta ultimaCarta = cartasRecicladas.pop();
+
+            // Mueve las cartas de la mesa al mazo una por una y las elimina hasta que la mesa quede vacia
+            while (!cartasRecicladas.isEmpty()){
+                this.mazo.push(cartasRecicladas.pop());
+            }
+
+            // Vuelve a poner la ultima carta que estaba antes en la mesa, la vuelve a colocar en la mesa para que el juego continue
+            cartasRecicladas.push(ultimaCarta);
+
+            // Por ultimo baraja las cartas
+            Collections.shuffle(this.mazo);
+
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("Se recargo el mazo con las cartas de la mesa de manera exitosa!!!!");
+            System.out.println("Esta es la carta que se vuelve a poner en el centro: " + ultimaCarta);
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------");
+            }
+        }
+    }
+
 
 
