@@ -24,6 +24,16 @@
                <children>
                   <ImageView fx:id="imagenViewMazo" fitHeight="109.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
                   <Label fx:id="labelTurno" text="Label" />
+                  <Label fx:id="labelNumeroCartas" text="Label">
+                     <font>
+                        <Font name="Arial Black" size="22.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelCambioColor">
+                     <font>
+                        <Font name="Arial Black" size="14.0" />
+                     </font>
+                  </Label>
                </children>
                <HBox.margin>
                   <Insets />
