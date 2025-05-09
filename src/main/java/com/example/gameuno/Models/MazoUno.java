@@ -45,6 +45,7 @@ public class MazoUno {
 
 
 
+
         //Esta parte añade la carta +2 dos veces por cada color
         String[] colores2 = {"blue", "green", "red", "yellow"};
         String[] valores2 = {"+2"};
@@ -68,6 +69,7 @@ public class MazoUno {
         }
 
 
+
         /**
         //Esta parte añade una carta de reserved por color
         String[] colores4 = {"blue", "green", "red", "yellow"};
@@ -79,6 +81,7 @@ public class MazoUno {
             }
         }
          **/
+
 
 
         //Esta parte añade 4 cartas +4 al mazo
@@ -107,6 +110,7 @@ public class MazoUno {
             }
         }
 
+
         //Al final cuando ya la pila esta creada aqui se reorganiza de forma aleatoria
         Collections.shuffle(mazo);
     }
@@ -121,6 +125,12 @@ public class MazoUno {
         return this.mazo.isEmpty();
     }
 
+    /**
+     * This method draws the top card from the deck, used when a player needs to draw a card
+     *
+     * @return mazo.pop()
+     */
+    // Este metodo saca la ultima carta del mazo, necesario para cuando se necesita comer una carta del mazo
     public Carta robarCarta() {
         return this.mazo.pop(); // Saca la carta de la pila y la elimina
     }
@@ -129,21 +139,33 @@ public class MazoUno {
         return this.mazo.size();
     }
 
-    public void mazoVacioRecargarMazoCartasMeza(Stack<Carta> cartasRecicladas) {
-        if(isEmpty() && cartasRecicladas.size() > 0){ // Metodo boolean isEmpty y asegura que existan cartas en la pila cartas recicladas
+    /**
+     * When deck is empty, this method reshuffles played cards into it except the last table card
+     *
+     * @param cartasJugadas
+     */
+    // Este metodo sirve para recargar la pila del mazo con las cartas jugadas en la pila de la mesa cuando
+    // el mazo se encuentra vacio pero vuelve a poner la ultima carta que tenia la mesa
+    public void mazoVacioRecargarMazoCartasMeza(Stack<Carta> cartasJugadas) {
+        if(isEmpty() && cartasJugadas.size() > 0){ // Metodo boolean isEmpty y asegura que existan cartas en la pila cartas recicladas
 
 
             // Guarda la ultima carta de la mesa y la elimina de esa pila (Se hace para luego de que se
             // quiten todas las cartas volverla a poner en la pila MesaDeJuego)
-            Carta ultimaCarta = cartasRecicladas.pop();
+            Carta ultimaCarta = cartasJugadas.pop();
 
             // Mueve las cartas de la mesa al mazo una por una y las elimina hasta que la mesa quede vacia
-            while (!cartasRecicladas.isEmpty()){
-                this.mazo.push(cartasRecicladas.pop());
+            while (!cartasJugadas.isEmpty()){
+                Carta  carta = cartasJugadas.pop();
+                // Restaura las cartas cambiarColor y +4 a su color origina negro antes de volverlas a ingresar al mazo
+                if (carta.getValor().equals("cambioColor") || carta.getValor().equals("+4")){
+                    carta.restaurarColorCarta();
+                }
+                this.mazo.push(cartasJugadas.pop());
             }
 
-            // Vuelve a poner la ultima carta que estaba antes en la mesa, la vuelve a colocar en la mesa para que el juego continue
-            cartasRecicladas.push(ultimaCarta);
+            //
+            cartasJugadas.push(ultimaCarta);
 
             // Por ultimo baraja las cartas
             Collections.shuffle(this.mazo);

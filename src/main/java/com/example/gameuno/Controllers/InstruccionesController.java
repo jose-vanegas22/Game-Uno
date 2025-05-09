@@ -3,11 +3,21 @@ package com.example.gameuno.Controllers;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 
+/**
+ * This class controls the instructions window and basically just displays that
+ *
+ * @author vaneg
+ * @author Alejandro Medina
+ * @version 1.0
+ */
 public class InstruccionesController {
 
     @FXML
     private VBox VBoxPrincipal;
 
+    /**
+     * The first method to run when starting
+     */
     @FXML
     public void initialize(){
         String imagePath = getClass().getResource("/com/example/gameuno/Images/FondoUno.png").toExternalForm();

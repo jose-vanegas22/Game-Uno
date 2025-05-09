@@ -90,7 +90,7 @@ public class GameUnoController {
         partida.iniciarPartida();
 
         // Colocar la carta inicial en la mesa y mostrarla visualmente
-        partida.colocarCartaInicial();
+        //partida.colocarCartaInicial();
         mostrarCartaCentro(partida.getCartaCentral());
 
 
@@ -213,7 +213,7 @@ public class GameUnoController {
     }
 
     /**
-     *
+     * This method allows the user to draw a card from the deck by clicking on an image
      */
     // Este metodo nos permite que el usuario robe una carta del mazo, haciendo click en una imagen
     private void robarCartaDelMazo() {
@@ -260,7 +260,7 @@ public class GameUnoController {
 
 
     /**
-     *
+     * This method shows an alert where we can pick a color when the jugadorPersona the cambiarColor card
      * @param carta
      */
     // Este metodo nos muestra una alerta en donde podemos escoger un color cuando el jugadorPersona juega
@@ -304,7 +304,7 @@ public class GameUnoController {
     }
 
     /**
-     *
+     * This method shows an alert where the jugadorPersona can choose a color when playing the +4 card
      * @param carta
      */
     // Este metodo nos muestra una alerta en donde el jugadorPersona tiene la opcion de escoger un color
@@ -390,7 +390,8 @@ public class GameUnoController {
 
 
     /**
-     *
+     * This method controls the turn logic if it's the jugadorPersona turn, it waits for their action,
+     * and if it's the jugadorMaquina turn, it makes a move
      */
     // Este metodo lo que hace es controlar la logica de turnos si es el turno del jugadorPersona espera
     // hasta que realice una accion y si es el turno del jugadorMaquina realiza una jugada
@@ -468,7 +469,9 @@ public class GameUnoController {
 
 
     /**
-     *
+     * This method controls whether the jugadorPersona interface is visible or not, based on its
+     * parameter (depending on whose turn it is). It's enabled by the boolean value returned by
+     * esTurnoJugadorPersona
      * @param habilitado
      */
     // Este metodo permite que sea visual o no la interfaz del JugadorPersona segun sea su parametro (segun el turno en el que se encuentre)
@@ -493,17 +496,17 @@ public class GameUnoController {
 
 
     /**
-     *
+     * Updates a label to display whose turn it is (jugadorPersona or jugadorMaquina)
      */
-    // permite mantener actualizado un label para darse cuenta si es turno de JugadorPersona o JugadorMaquina
+    // Este metodo permite mantener actualizado un label para darse cuenta si es turno de JugadorPersona o JugadorMaquina
     private void actualizarTurnoUI() {
         javafx.application.Platform.runLater(() -> { // Para asegurarse que corra en el hilo principal y no existan problemas
         if (partida.esTurnoJugadorPersona()) {
             labelTurno.setText("Tu turno");
-            labelTurno.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+            labelTurno.setStyle("-fx-text-fill: green; -fx-background-color: #FFFFFFB3; -fx-background-radius: 20px;");
         } else {
             labelTurno.setText("Turno de la máquina");
-            labelTurno.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+            labelTurno.setStyle("-fx-text-fill: red; -fx-background-color: #FFFFFFB3; -fx-background-radius: 20px;");
         }
         System.out.println("Turno actualizado: " + labelTurno.getText());
         });
@@ -511,9 +514,10 @@ public class GameUnoController {
 
 
     /**
-     *
+     * "Method that checks if any player has run out of cards (winner) and shows an alert message if
+     * someone won
      */
-    // Metodo que ayuda a determinar si ya alguien se quedo sin cartas y si lo hay muestra un mensaje con un alert
+    // Metodo que ayuda a determinar si ya alguien se quedo sin cartas (ganador) y si lo hay muestra un mensaje con un alert
     private void ganador(){
         Jugador ganador = partida.verificarGanador(); // Guarda lo que lanza verificarGanador en la variable
         if (ganador != null) { // Si hay un ganador
@@ -525,7 +529,7 @@ public class GameUnoController {
     }
 
     /**
-     *
+     * Method that shows an alert displaying the game winner
      * @param ganador
      */
     // Metodo que muestra un alert en donde se evidencia el ganador del juego

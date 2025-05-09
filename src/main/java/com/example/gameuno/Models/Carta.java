@@ -53,7 +53,7 @@ public class Carta {
     }
 
     /**
-     *
+     * Returns the card file (normal/special)
      * @return
      */
     public String getNombreArchivo() {
@@ -152,9 +152,12 @@ public class Carta {
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // Metodo que sirve para pasar las cartas cambioDeColor y +4 a su color original o sea "negro", para que
+    // Metodo que sirve para pasar las cartas cambioDeColor y +4 a su color original "negro", para que
     // su logica siga funcionando
 
+    /**
+     * Resets cambioColor/+4 cards to negro to maintain game logic
+     */
     public void restaurarColorCarta(){
         if (this.valor.equals("cambioColor") ||  this.valor.equals("+4")) {
             this.color = "negro"; // Restaura al color original

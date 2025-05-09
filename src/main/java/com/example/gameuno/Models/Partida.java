@@ -41,14 +41,13 @@ public class Partida {
      */
     // Permite añadir los jugadores a la lista o partida en este caso solo serian 2 jugadorPersona y jugadorMaquina
     public void agregarJugador(Jugador jugador) {
-
         jugadores.add(jugador);
     }
 
     /**
      * This method allows any other class to request the player without creating new instances
      *
-     * @return
+     * @return jugador
      */
     // Busca en la lista de jugadores al que sea una instancia de JugadorPersona, garantiza de siempre trabajar con el objeto correcto
     public JugadorPersona getJugadorPersona() {
@@ -62,7 +61,8 @@ public class Partida {
 
     /**
      * This method allows any other class to request the machine without creating new instances
-     * @return
+     *
+     * @return jugador
      */
     // Busca en la lista de jugadores al que sea una instancia de JugadorMaquina, garantiza que siempre se use el mismo objeto
     public JugadorMaquina getJugadorMaquina() {
@@ -145,9 +145,10 @@ public class Partida {
     // Metodos que sirven para las mecanicas de los turnos, lo que se hace en el turno de cada jugador
 
     /**
+     * This method runs when it's the jugadorPersona turn (to play a card)
      *
      * @param carta
-     * @return
+     * @return true or false
      */
     // Este metodo se ejecuta cuando llega el turno del jugadorPersona (para jugar una carta)
     public boolean turnoJugadorPersona(Carta carta){
@@ -182,8 +183,9 @@ public class Partida {
     }
 
     /**
+     * This method is used to draw a card from the deck when needed for the jugadorPersona
      *
-     * @return
+     * @return cartaRobada or null
      */
     // Este metodo sirve para agarrar una carta del mazo cuando se necesite en el caso de jugadorPersona
     public Carta robarCartaJugadorPersona(){
@@ -191,7 +193,7 @@ public class Partida {
         if (esTurnoJugadorPersona() && partiaIniciada) {
 
             if (mazoUno.isEmpty()){ // Si el mazo esta vacio las recicla o sea pone las cartas de la mesa menos las ultimas en el mazo
-                mazoUno.mazoVacioRecargarMazoCartasMeza(mesa.cartasQueSePuedenReciclar());
+                mazoUno.mazoVacioRecargarMazoCartasMeza(mesa.getCartasJugadas());
             }
 
             if (!mazoUno.isEmpty()) {
@@ -211,8 +213,9 @@ public class Partida {
     }
 
     /**
+     * This runs when it's the jugadorMaquina turn to play its cards
      *
-     * @return
+     * @return true or false
      */
     // Se ejecuta cuando llega el turno de JugadorMaquina (Para jugar sus cartas)
     public boolean turnoJugadorMaquina(){
@@ -261,7 +264,7 @@ public class Partida {
 
         } else{  // si la carta es nula porque no se puedo jugar ninguna hace esto
             if (mazoUno.isEmpty()){
-                mazoUno.mazoVacioRecargarMazoCartasMeza(mesa.cartasQueSePuedenReciclar());
+                mazoUno.mazoVacioRecargarMazoCartasMeza(mesa.getCartasJugadas());
             }
             // Esto se aplica si no tiene cartas para jugar validas en la mano, lo obliga a robar una carta del mazo
 
@@ -277,7 +280,7 @@ public class Partida {
     // Estos metodos manejan los efectos que tienen las cartas o sea lo que se hace cuando se ponen
 
     /**
-     *
+     * This method applies the +2 card effect
      */
     // Este metodo aplica el efecto de la carta +2
     public void efectoCartaMas2(){
@@ -289,7 +292,7 @@ public class Partida {
         for (int i = 0; i < 2; i++){ // Aplica dos veces el castigo (comer 2 cartas)
             // Si el mazo esta vacio lo recarga para que se pueda realizar el castigo
             if (mazoUno.isEmpty()){
-                mazoUno.mazoVacioRecargarMazoCartasMeza(mesa.cartasQueSePuedenReciclar());
+                mazoUno.mazoVacioRecargarMazoCartasMeza(mesa.getCartasJugadas());
             }
             Carta cartaRobada = mazoUno.robarCarta(); // Saca una carta del mazo y la guarda en la variable
             jugadorAfectado.recibirCarta(cartaRobada); // Le añade a la mano la carta robada al jugador afectado
@@ -297,7 +300,7 @@ public class Partida {
     }
 
     /**
-     *
+     * This method applies the +4 card effect
      */
     // Este metodo aplica el efecto de la carta +4
     public void efectorCartaMas4(){
@@ -307,7 +310,7 @@ public class Partida {
         for (int i = 0; i < 4; i++){ // Aplica 4 veces el castigo (comer 4 cartas)
             // Si el mazo esta vacio recarga el mazo con las cartas de la mesa menos la ultima
             if (mazoUno.isEmpty()){
-                mazoUno.mazoVacioRecargarMazoCartasMeza(mesa.cartasQueSePuedenReciclar());
+                mazoUno.mazoVacioRecargarMazoCartasMeza(mesa.getCartasJugadas());
             }
             Carta cartaRobada = mazoUno.robarCarta(); // Saca la ultima carta del mazo y la guarda en la variable
             jugadorAfectado.recibirCarta(cartaRobada); // Se añade la carta robada en la mano del jugador afectado
@@ -315,9 +318,9 @@ public class Partida {
     }
 
     /**
-     *
+     * This method skips the turn so the player who played the card gets to play again
      */
-    // Este metodo lo que hace es pasar el turno para que el jugador que la puso le vuelva a tocar
+    // Este metodo lo que hace es pasar el turno para que el jugador que la puso le vuelva a tocar jugar
     public void efectoCartaCederTurno(){
         pasarTurno();
     }
@@ -327,7 +330,7 @@ public class Partida {
     // Metodos para consultar a quien le toca el turno, controlar los turnos y conrolar el juego
 
     /**
-     *
+     * This method determines whose turn it is, and modifies its value each time it's called
      */
     // Este metodo lo que hace es determinar de quien es el turno, cada que se hace el llamado en alguna parte modifica su valor
     public void pasarTurno(){
@@ -336,6 +339,7 @@ public class Partida {
     }
 
     /**
+     * This method determines that it's the jugadorPersona turn when the value is 0
      *
      * @return true or false
      */
@@ -345,6 +349,7 @@ public class Partida {
     }
 
     /**
+     * This method determines that it's the jugadorMaquina turn when the value is 1
      *
      * @return true or false
      */
@@ -354,8 +359,9 @@ public class Partida {
     }
 
     /**
+     * This method determines the winner by checking if their hand is empty
      *
-     * @return
+     * @return jugadorPersona or jugadorMaquina or null
      */
     // Este metodo determinar quien es el ganador segun si tiene la mano vacia
     public Jugador verificarGanador(){

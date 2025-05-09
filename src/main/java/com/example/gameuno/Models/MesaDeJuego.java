@@ -19,8 +19,23 @@ public class MesaDeJuego {
      */
     //Este metodo lo que hace es poner o agregar una carta en la pila o mesa en este caso
     public void colocarCarta(Carta carta) {
+
+        cartasJugadas.push(carta);
+        System.out.println("Añadiendo carta: " + carta.getNombreArchivo());
+
+        // Mostrar el estado de la pila
+        System.out.println("Cartas de la pila: " + cartasJugadas);
+
+        /**
+        // Imprime el método que llama a colocarCarta para saber de dónde proviene
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        System.out.println("Se ha llamado a colocarCarta desde: " + stackTrace[2].getMethodName());
+
+        // Imprime detalles de la carta que se está añadiendo
+        System.out.println("Añadiendo carta: " + carta.getNombreArchivo()); // Asume que Carta tiene un método getNombre()
         cartasJugadas.push(carta);
         System.out.println("Cartas de la pila: " + cartasJugadas);
+         **/
     }
 
     /**
@@ -36,6 +51,14 @@ public class MesaDeJuego {
         return null;
     }
 
+
+    /**
+     * This method compares the color and number of the new card with the previous one to determine if
+     * it can be played or not
+     *
+     * @param cartaActual
+     * @return true or false
+     */
     //Este metodo lo que hace es igualar el color y numero de la carta nueva con la anterior para saber
     //si se puede colocar o no
     public boolean ponerCartaColorNumero(Carta cartaActual){
@@ -70,6 +93,7 @@ public class MesaDeJuego {
     }
 
 
+    /**
     public Stack<Carta> cartasQueSePuedenReciclar() {
         Stack<Carta> cartasRecicladas =  new Stack<>();
         cartasRecicladas.addAll( cartasJugadas );
@@ -95,5 +119,6 @@ public class MesaDeJuego {
 
         return cartasRecicladas;
     }
+     **/
 
 }
