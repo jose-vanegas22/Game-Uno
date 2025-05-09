@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox fx:id="VBoxPrincipal" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gameuno.Controllers.InstruccionesController">
    <children>
       <Label text="INSTRUCCIONES" textFill="WHITE">
@@ -14,13 +13,16 @@
             <Insets bottom="60.0" />
          </VBox.margin>
          <font>
-            <Font name="Arial Black" size="18.0" />
+            <Font name="Arial Black" size="22.0" />
          </font>
       </Label>
-      <TextArea prefHeight="249.0" prefWidth="520.0">
+      <TextArea prefHeight="249.0" prefWidth="520.0" text="REGLAS DEL UNO:&#10;&#10;Objetivo: &#10;Ser el primer jugador en quedarse sin cartas en la mano&#10;&#10;Preparacion:&#10;- Se reparten 5 cartas iniciales a cada jugador&#10;- El resto de cartas forman el mazo y no se pueden ver&#10;- Del mazo se saca una y se pone en el centro boca arriba&#10;&#10;Como jugar:&#10;- En tu turno, debes lanzar una carta que coincida con el color o valor &#10;de la carta del centro&#10;- Cuentas con cartas especiales que puedes jugar&#10;&#10;Cartas especiales:&#10;- Salto: El otro jugador pierde su turno y te vuelve a tocar a ti&#10;- +2: El otro jugador deber robar 2 cartas del mazo&#10;- Escoger color: puedes elegir el color que quieras&#10;- +4 cambio color: puedes elegir el color y ademas el otro jugador debe &#10;comer 4 cartas&#10;&#10;Gritar UNO:&#10;- Cuando te quedes con una carta en la mano, debes presionar el boton &#10;UNO antes que se acabe tu tiempo y antes que el jugador oponente te &#10;castigue (te tocaria comer 2 cartas)&#10;&#10;Fin del juego:&#10;El primer jugador que se quede sin cartas en la mano GANA!!!!!!!!!!!!!!!!!!!!!!">
          <VBox.margin>
             <Insets left="40.0" right="40.0" />
          </VBox.margin>
+         <font>
+            <Font name="Arial Black" size="12.0" />
+         </font>
       </TextArea>
    </children>
 </VBox>

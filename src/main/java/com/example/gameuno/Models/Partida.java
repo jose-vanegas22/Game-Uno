@@ -2,6 +2,7 @@ package com.example.gameuno.Models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Stack;
 
 /**
@@ -15,13 +16,14 @@ public class Partida {
 
     private MazoUno mazoUno; //Instancia de MazoUno
     private List<Jugador> jugadores;
-    private Carta cartaCentral;
     private MesaDeJuego mesa;
-
+    private int turnoActual = 0; // 0 = JugadorPersona, 1 = JugadorMaquina
+    private boolean partiaIniciada = false; // Variable para saber si la partida esta en curso o termino
+    private String ColorEscogidoMaquina; // Variable para guardar y mostrar el color escogigo por la maquina en la carta cambio de color
+    private String ColorEscogidoMaquinaMas4; // Variable para guardar y mostrar el color escogido por la maquina en la carta +4
 
     /**
-     *This constructor initializes the main components when a new Partida object
-     * is created
+     * This constructor initializes the main components when a new Partida object
      */
     public Partida() {
         mazoUno = new MazoUno();  // Crear y preparar el mazo
@@ -29,16 +31,56 @@ public class Partida {
         mesa = new MesaDeJuego();
     }
 
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Parte que gestiona los jugadores
+
     /**
      * This method adds players to the list of players
+     *
      * @param jugador
      */
+    // Permite añadir los jugadores a la lista o partida en este caso solo serian 2 jugadorPersona y jugadorMaquina
     public void agregarJugador(Jugador jugador) {
+
         jugadores.add(jugador);
     }
 
     /**
-     *This method deals the initial cards to the players
+     * This method allows any other class to request the player without creating new instances
+     *
+     * @return
+     */
+    // Busca en la lista de jugadores al que sea una instancia de JugadorPersona, garantiza de siempre trabajar con el objeto correcto
+    public JugadorPersona getJugadorPersona() {
+        for (Jugador jugador : jugadores) { // Recorre toda la lista de jugadores
+            if (jugador instanceof JugadorPersona) { // Aqui se pregunta si jugador es una instancia de JugadorPersona
+                return (JugadorPersona) jugador; // Hace un casteo, fuerza a java a entender que jugador es de tipo JugadorPersona, a Java le toca confiar
+            }
+        }
+        return null; // No encontrado
+    }
+
+    /**
+     * This method allows any other class to request the machine without creating new instances
+     * @return
+     */
+    // Busca en la lista de jugadores al que sea una instancia de JugadorMaquina, garantiza que siempre se use el mismo objeto
+    public JugadorMaquina getJugadorMaquina() {
+        for (Jugador jugador : jugadores) {
+            if (jugador instanceof JugadorMaquina) {
+                return (JugadorMaquina) jugador;
+            }
+        }
+        return null;
+    }
+
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Aqui estan todos los metodos sobre el inicio de partida
+
+    /**
+     * This method deals the initial cards to the players
+     *
      * @param cantidad
      */
     //Este metodo reparte las cartas de los jugadores que estan en la lista, en este caso a la persona
@@ -56,16 +98,18 @@ public class Partida {
     }
 
     /**
-     *
+     * This method prepares the game by dealing 5 cards to each player, placing the first card on the table,
+     * and starting the match
      */
+    // Este metodo lo que hace es preparar el juego repartiendo 5 cartas a cada jugador, colocando la
+    // primera carta en la mesa e iniciando la partida
     public void iniciarPartida() {
-
-        System.out.println("Cartas en el mazo antes de repartir: " + mazoUno.getMazo().size());
-
+        System.out.println("Cantidad de cartas en el mazo antes de repartir: " + mazoUno.getMazo().size());
 
         // Reparte 5 cartas a cada jugador
         repartirCartasIniciales(5);
-
+        colocarCartaInicial();
+        partiaIniciada = true;
 
         // Mostrar las cartas de cada jugador en consola
         for (Jugador jugador : jugadores) {
@@ -75,44 +119,334 @@ public class Partida {
             }
             System.out.println("--------------------------");
         }
-
-
     }
 
     /**
-     *This method is used to place the first card from the deck on the table
+     * This method is used to place the first card from the deck on the table
      */
-    public void colocarCartaInicial(){
-        if (!mazoUno.getMazo().isEmpty()){
+    // Este metodo lo que hace es que si no esta vacio el mazo en la pila mesa pone la ultima carta de la pila mazo
+    public void colocarCartaInicial() {
+        if (!mazoUno.getMazo().isEmpty()) {
             mesa.colocarCarta(mazoUno.getMazo().pop());
         }
     }
 
     /**
      * This method returns the last card added to the tablet's stack
+     *
      * @return
      */
-    public Carta getCartaCentral(){
-
+    // Este metodo devuelve la carta que esta en la mesa, la ultima
+    public Carta getCartaCentral() {
         return mesa.getCartaSuperior();
     }
 
+    //- - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Metodos que sirven para las mecanicas de los turnos, lo que se hace en el turno de cada jugador
+
     /**
-     *This method returns the created mazoUno object
+     *
+     * @param carta
      * @return
      */
-    public MazoUno getMazoUno(){
+    // Este metodo se ejecuta cuando llega el turno del jugadorPersona (para jugar una carta)
+    public boolean turnoJugadorPersona(Carta carta){
+        JugadorPersona jugadorPersona = getJugadorPersona(); // Se crea una referencia del unico objeto que puede existir
+        if (!esTurnoJugadorPersona() || !partiaIniciada) return false; // Para que JugadorPersona no pueda jugar
+
+        if (mesa.ponerCartaColorNumero(carta)){ // Evalua si se puede poner una carta (valor o color y la nueva version con los comodines)
+            // Si se puede poner se ejecuta el codigo de abajo
+            mesa.colocarCarta(carta); // Pone la carta jugada en la mesa
+            System.out.println("Mano antes de eliminar: " + jugadorPersona.getMano());
+            jugadorPersona.getMano().remove(carta); // Remueve o elimina la carta de la mano del jugadorPersona esta solo es la parte logica
+            System.out.println("Mano despues de eliminar: " + jugadorPersona.getMano());
+
+            // Si se uso una cartaMas2 aplica el efecto
+            if (carta.cartaMas2()){
+                efectoCartaMas2();
+            }
+
+            // Si se uso una cartaCederTurno se aplica el efecto
+            if (carta.cartaCederTurno()){
+                efectoCartaCederTurno();
+            }
+
+            // Si se uso una cartaMas4 se aplica el efecto
+            if (carta.cartaMas4()) {
+                efectorCartaMas4();
+            }
+
+            return true; // Para saber que toda la jugada se completo y fue exitosa
+        }
+        return false; // Para saber que la carta no se pudo poner porque no cumplio con las reglas
+    }
+
+    /**
+     *
+     * @return
+     */
+    // Este metodo sirve para agarrar una carta del mazo cuando se necesite en el caso de jugadorPersona
+    public Carta robarCartaJugadorPersona(){
+
+        if (esTurnoJugadorPersona() && partiaIniciada) {
+
+            if (mazoUno.isEmpty()){ // Si el mazo esta vacio las recicla o sea pone las cartas de la mesa menos las ultimas en el mazo
+                mazoUno.mazoVacioRecargarMazoCartasMeza(mesa.cartasQueSePuedenReciclar());
+            }
+
+            if (!mazoUno.isEmpty()) {
+                Carta cartaRobada = mazoUno.robarCarta(); // Saca una carta del mazo y esa carta se guarda en la variable
+                JugadorPersona jugadorPersona = getJugadorPersona(); // Se crea referencia del unico objeto que puede existir
+
+                if (jugadorPersona != null) {
+                    System.out.println("Mano del jugadorPersona antes de robar: " + jugadorPersona.getMano());
+                    jugadorPersona.recibirCarta(cartaRobada); // Se añade la cartaRobada en la mano del jugadorPersona
+                    System.out.println("Carta robada: " + cartaRobada);
+                    System.out.println("Mano del jugadorPersona despues de robar: " + jugadorPersona.getMano());
+                    return cartaRobada;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @return
+     */
+    // Se ejecuta cuando llega el turno de JugadorMaquina (Para jugar sus cartas)
+    public boolean turnoJugadorMaquina(){
+        if(!esTurnoJugadorMaquina() || !partiaIniciada) return false; // Si se cumple retorna false y no se ejecuta el resto del codigo
+
+        JugadorMaquina jugadorMaquina = getJugadorMaquina(); // Se asigna el unico objeto que puede existir para siempre usar el mismo
+        System.out.println("Mano de la maquina: " + getJugadorMaquina().getMano());
+        Carta cartaCentral = mesa.getCartaSuperior(); // Devuelve la ultima carta de la pila mesa y la guarda en la variable
+        Carta cartaJugada = jugadorMaquina.jugarCarta(cartaCentral); // La logica de como juega una carta la maquina segun la
+                                                                     // referencia de la carta del centro y esa carta que jugo la guarda
+                                                                     // en la variable para usar los efectos
+
+
+        if(cartaJugada != null) {
+
+            // Si la carta que decidio jugar es cartaMas4 escoge un color al azar y lo modifica con el set
+            if (cartaJugada.cartaMas4()){
+                String[] colores = {"red", "blue", "green", "yellow"};
+                String elegido = colores[new Random().nextInt(colores.length)]; // color al azar de la lista
+                cartaJugada.setColorTemporalMas4(elegido); // ejemplo: +4_negro.png, +4_red.png
+                efectorCartaMas4(); // aplica el efecto de esta carta
+                setColorEscogidoMaquinaMas4(elegido); // modifica el color escogido para luego usar un get y mostrarlo en un label
+            }
+
+            // Si la carta que decidio jugar es cartaCambioColor escoge un color al azar y lo modifica con el set
+            if (cartaJugada.cartaCambioColor()){
+                String[] colores = {"red", "blue", "green", "yellow"};
+                String elegido = colores[new Random().nextInt(colores.length)];
+                cartaJugada.setColorTemporal(elegido); // modifica el color y le pone el que escogio al azar
+                setColorEscogidoMaquina(elegido); // modifica y permite despues mostrar con un get visualmente en un label
+            }
+
+
+           // Esta parte lo que hace es aplicar el efecto si la carta jugada es +2
+            if (cartaJugada.cartaMas2()){
+                efectoCartaMas2();
+            }
+
+            // Esta parte lo que hace es aplicar el efecto de ceder turno si la carta jugada es cartaCederTurno
+            if (cartaJugada.cartaCederTurno()){
+                efectoCartaCederTurno();
+            }
+
+
+            mesa.colocarCarta(cartaJugada); // coloca en la pila de la mesa la carta que decidio jugar
+
+        } else{  // si la carta es nula porque no se puedo jugar ninguna hace esto
+            if (mazoUno.isEmpty()){
+                mazoUno.mazoVacioRecargarMazoCartasMeza(mesa.cartasQueSePuedenReciclar());
+            }
+            // Esto se aplica si no tiene cartas para jugar validas en la mano, lo obliga a robar una carta del mazo
+
+            Carta cartaRobada = mazoUno.robarCarta(); // Saca una carta del mazo y se guarda en la variable
+            jugadorMaquina.recibirCarta(cartaRobada); // Esa carta robada se añade a la mano de la maquina
+            System.out.println("[Máquina] Robó carta: " + cartaRobada);
+        }
+        return true; // Para determinar que el turno de la maquina ya se termino de ejecutar sin importar la accion
+    }
+
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Estos metodos manejan los efectos que tienen las cartas o sea lo que se hace cuando se ponen
+
+    /**
+     *
+     */
+    // Este metodo aplica el efecto de la carta +2
+    public void efectoCartaMas2(){
+
+        // Determina quien es el jugador afectado, si es el turno de jugadorPersona se le aplica a la maquina
+        // y de lo contrario se le aplica al jugadorPersona
+        Jugador jugadorAfectado = esTurnoJugadorPersona() ? getJugadorMaquina() : getJugadorPersona(); // funciona como un if-else
+
+        for (int i = 0; i < 2; i++){ // Aplica dos veces el castigo (comer 2 cartas)
+            // Si el mazo esta vacio lo recarga para que se pueda realizar el castigo
+            if (mazoUno.isEmpty()){
+                mazoUno.mazoVacioRecargarMazoCartasMeza(mesa.cartasQueSePuedenReciclar());
+            }
+            Carta cartaRobada = mazoUno.robarCarta(); // Saca una carta del mazo y la guarda en la variable
+            jugadorAfectado.recibirCarta(cartaRobada); // Le añade a la mano la carta robada al jugador afectado
+        }
+    }
+
+    /**
+     *
+     */
+    // Este metodo aplica el efecto de la carta +4
+    public void efectorCartaMas4(){
+
+        Jugador jugadorAfectado = esTurnoJugadorPersona() ? getJugadorMaquina() : getJugadorPersona(); // Funciona como un if-else
+
+        for (int i = 0; i < 4; i++){ // Aplica 4 veces el castigo (comer 4 cartas)
+            // Si el mazo esta vacio recarga el mazo con las cartas de la mesa menos la ultima
+            if (mazoUno.isEmpty()){
+                mazoUno.mazoVacioRecargarMazoCartasMeza(mesa.cartasQueSePuedenReciclar());
+            }
+            Carta cartaRobada = mazoUno.robarCarta(); // Saca la ultima carta del mazo y la guarda en la variable
+            jugadorAfectado.recibirCarta(cartaRobada); // Se añade la carta robada en la mano del jugador afectado
+        }
+    }
+
+    /**
+     *
+     */
+    // Este metodo lo que hace es pasar el turno para que el jugador que la puso le vuelva a tocar
+    public void efectoCartaCederTurno(){
+        pasarTurno();
+    }
+
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Metodos para consultar a quien le toca el turno, controlar los turnos y conrolar el juego
+
+    /**
+     *
+     */
+    // Este metodo lo que hace es determinar de quien es el turno, cada que se hace el llamado en alguna parte modifica su valor
+    public void pasarTurno(){
+        // 1-0 = 1 y cuando se vuelve a llamar 1-1 = 0
+        turnoActual = 1 - turnoActual; // Metodo que cambia a otro turno entre 0 y 1
+    }
+
+    /**
+     *
+     * @return true or false
+     */
+    // Este metodo determina que el turno del jugadorPersona es cuando este en 0
+    public boolean esTurnoJugadorPersona(){
+        return turnoActual == 0;
+    }
+
+    /**
+     *
+     * @return true or false
+     */
+    // Este metodo determina que el turno del jugadorMaquina es cuando este en 1
+    public boolean esTurnoJugadorMaquina(){
+        return turnoActual == 1;
+    }
+
+    /**
+     *
+     * @return
+     */
+    // Este metodo determinar quien es el ganador segun si tiene la mano vacia
+    public Jugador verificarGanador(){
+        JugadorPersona jugadorPersona = getJugadorPersona(); // Se asigna el unico objeto de JugadorPersona que puede exisitr
+        JugadorMaquina jugadorMaquina = getJugadorMaquina(); // Se asigna el unico objeto de JugadorMaquina que puede existir
+
+        if (jugadorPersona.getMano().isEmpty()){
+            return jugadorPersona;
+        } else if (jugadorMaquina.getMano().isEmpty()){
+            return jugadorMaquina;
+        }
+
+        return null; // Aun  no hay ganadores
+    }
+
+
+
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Esta parte contiene los setters y getters
+
+
+    // Este metodo me ayuda a cambiar desde otra clases la carta del centro con una nueva instancia que tenga
+    // el color que se escogio temporalmente
+    public void setCartaDelCnetro(Carta carta){
+        mesa.colocarCarta(carta);
+    }
+
+    public void setColorEscogidoMaquina(String colorEscogidoMaquina) {
+        this.ColorEscogidoMaquina = colorEscogidoMaquina;
+    }
+
+    public String getColorEscogidoMaquina() {
+        return ColorEscogidoMaquina;
+    }
+
+
+    // Estos metodos capturan el color escogido para mostrarlo en otro lado
+    public void setColorEscogidoMaquinaMas4(String colorEscogidoMaquinaMas4) {
+        this.ColorEscogidoMaquinaMas4 = colorEscogidoMaquinaMas4;
+    }
+
+    public String getColorEscogidoMaquinaMas4() {
+        return ColorEscogidoMaquinaMas4;
+    }
+
+
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Codigo sin importancia y pendiente por borrar
+
+    public int contarCartasEnJuego(String colorCarta){
+        int cont = 0;
+
+        //Esta parte va a capturar las cartas de la mano del JugadorPersona
+        JugadorPersona jugadorPersona = getJugadorPersona();
+        if (jugadorPersona != null){
+            for (Carta carta : jugadorPersona.getMano()){
+                if (carta.getColor().equals(colorCarta)){
+                    cont++;
+                }
+            }
+        }
+
+        //Esta parte va a capturar las cartas de la mano del JugadorMaquina
+        JugadorMaquina jugadorMaquina = getJugadorMaquina();
+        if (jugadorMaquina != null){
+            for (Carta carta : jugadorMaquina.getMano()){
+                if (carta.getColor().equals(colorCarta)){
+                    cont++;
+                }
+            }
+        }
+
+        return cont;
+    }
+
+
+    /**
+     * This method returns the created mazoUno object
+     *
+     * @return
+     */
+    public MazoUno getMazoUno() {
 
         return this.mazoUno;
     }
 
-    public MesaDeJuego getMesa(){
+    public MesaDeJuego getMesa() {
+
         return mesa;
     }
-
-
-
-
-
 
 }
