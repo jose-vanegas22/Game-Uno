@@ -120,6 +120,10 @@ public class MazoUno {
         return mazo;
     }
 
+    public Stack<Carta> setMazo(Stack<Carta> mazo) {
+        return this.mazo = mazo;
+    }
+
     // Retorna true si el mazo esta vacio
     public boolean isEmpty() {
         return this.mazo.isEmpty();
@@ -161,7 +165,7 @@ public class MazoUno {
                 if (carta.getValor().equals("cambioColor") || carta.getValor().equals("+4")){
                     carta.restaurarColorCarta();
                 }
-                this.mazo.push(cartasJugadas.pop());
+                this.mazo.push(carta);
             }
 
             //

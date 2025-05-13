@@ -43,5 +43,10 @@ public class Jugador {
     }
 
 
+    public List<Carta> SetMano(List<Carta> mano) {
+        return this.mano = mano;
+    }
+
+
 
 }

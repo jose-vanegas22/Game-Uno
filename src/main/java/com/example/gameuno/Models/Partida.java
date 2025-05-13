@@ -22,6 +22,9 @@ public class Partida {
     private String ColorEscogidoMaquina; // Variable para guardar y mostrar el color escogigo por la maquina en la carta cambio de color
     private String ColorEscogidoMaquinaMas4; // Variable para guardar y mostrar el color escogido por la maquina en la carta +4
 
+    private JugadorPersona jugadorPersona;
+    private JugadorMaquina jugadorMaquina;
+
     /**
      * This constructor initializes the main components when a new Partida object
      */
@@ -59,6 +62,11 @@ public class Partida {
         return null; // No encontrado
     }
 
+    public void setJugadorPersona(JugadorPersona jugador) {
+        this.jugadorPersona = jugador;
+        this.jugadores.add(jugador);
+    }
+
     /**
      * This method allows any other class to request the machine without creating new instances
      *
@@ -72,6 +80,11 @@ public class Partida {
             }
         }
         return null;
+    }
+
+    public void setJugadorMaquina(JugadorMaquina jugador) {
+        this.jugadorMaquina = jugador;
+        this.jugadores.add(jugador);
     }
 
 
