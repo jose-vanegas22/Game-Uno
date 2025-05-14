@@ -22,6 +22,7 @@ public class Partida {
     private String ColorEscogidoMaquina; // Variable para guardar y mostrar el color escogigo por la maquina en la carta cambio de color
     private String ColorEscogidoMaquinaMas4; // Variable para guardar y mostrar el color escogido por la maquina en la carta +4
 
+    //private int winner;
     private JugadorPersona jugadorPersona;
     private JugadorMaquina jugadorMaquina;
 

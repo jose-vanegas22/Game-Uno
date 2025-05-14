@@ -58,4 +58,7 @@ public class Jugador {
         this.winner = winner;
     }
 
+    public int getManoSize() {
+        return this.mano.size();
+    }
 }

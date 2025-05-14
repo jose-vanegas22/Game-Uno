@@ -2,6 +2,7 @@ package com.example.gameuno.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * This class controls the instructions window and basically just displays that
@@ -22,5 +23,10 @@ public class InstruccionesController {
     public void initialize(){
         String imagePath = getClass().getResource("/com/example/gameuno/Images/FondoUno.png").toExternalForm();
         VBoxPrincipal.setStyle("-fx-background-image: url('" + imagePath + "'); -fx-background-size: cover;");
+    }
+
+    public void hideInstructionsView(){
+        Stage stage = (Stage) VBoxPrincipal.getScene().getWindow();
+        stage.hide();
     }
 }
