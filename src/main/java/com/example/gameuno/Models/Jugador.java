@@ -49,6 +49,11 @@ public class Jugador {
         this.UNOState = unoState;
     }
 
+    public List<Carta> SetMano(List<Carta> mano) {
+        return this.mano = mano;
+    }
+
+
     public void setWinner(boolean winner) {
         this.winner = winner;
     }

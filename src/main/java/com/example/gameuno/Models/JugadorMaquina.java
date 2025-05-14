@@ -18,10 +18,16 @@ public class JugadorMaquina extends Jugador {
     //Este constructor recibe nombre como argumentos y super lo que hace es llamar al constructor de la clase
     //padre y le pasa el nombre
     public JugadorMaquina(String nombre) {
-
         super(nombre);
     }
 
+    /**
+     * This method allows the jugadorMaquina to play a valid random card. It scans the jugadorMaquina
+     * card list, saves the allowed/playable cards into a sublist, and then randomly selects one to play
+     *
+     * @param cartaCentral
+     * @return cartaJugada or null
+     */
     public Carta jugarCarta(Carta cartaCentral){
         List<Carta> cartasPermitidas = new ArrayList<>(); // En esta es una sublista de todas las cartas
                                                           // que tiene la maquina, se guardan las cartas que puede jugar

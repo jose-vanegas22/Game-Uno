@@ -28,7 +28,35 @@
                      </font>
                   </Button>
                   <ImageView fx:id="imagenViewMazo" fitHeight="109.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="labelTurno" text="Label" />
+                  <Label fx:id="labelTurno">
+                     <font>
+                        <Font name="Arial Black" size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="5.0" right="5.0" />
+                     </padding></Label>
+                  <Label fx:id="labelCambioColor" style="-fx-background-color: #FFFFFFB3; -fx-background-radius: 20px;">
+                     <font>
+                        <Font name="Arial Black" size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="5.0" right="5.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="labelNumeroCartas">
+                     <font>
+                        <Font name="Arial Black" size="22.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
                </children>
                <HBox.margin>
                   <Insets />
