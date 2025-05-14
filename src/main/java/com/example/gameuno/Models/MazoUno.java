@@ -66,16 +66,6 @@ public class MazoUno {
         }
 
 
-        //Esta parte añade una carta de reserved por color
-        String[] colores4 = {"blue", "green", "red", "yellow"};
-        String[] valores4 = {"reserve"};
-        for (String color : colores4) {
-            for (String valor : valores4) {
-                String nombreArchivo = valor + "_" + color + ".png";
-                mazo.push(new Carta(color, valor, nombreArchivo));
-            }
-        }
-
         //Esta parte añade 4 cartas +4 al mazo
         String[] colores5 = {"wild_draw"};
         String[] valores5 = {"4"};

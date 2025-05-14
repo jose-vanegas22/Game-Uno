@@ -14,10 +14,13 @@ public class Jugador {
 
     private String nombre;
     private List<Carta> mano; //Lista la cual guarda las cartas que tiene el jugador
+    private boolean UNOState;
+    private boolean winner;
 
     public Jugador(String nombre) {
         this.nombre = nombre;
         this.mano = new ArrayList<>();
+        this.UNOState = false;
     }
 
     /**
@@ -42,6 +45,12 @@ public class Jugador {
         return mano;
     }
 
+    public void setUnoState(boolean unoState) {
+        this.UNOState = unoState;
+    }
 
+    public void setWinner(boolean winner) {
+        this.winner = winner;
+    }
 
 }
