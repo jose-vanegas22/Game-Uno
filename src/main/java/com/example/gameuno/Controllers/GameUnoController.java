@@ -381,6 +381,7 @@ public class GameUnoController {
             String ruta = "/com/example/gameuno/Images/Cards-uno/" + carta.getNombreArchivo();
             cardInfoLabel.setText(" ");
 
+            //Excepción que en caso de no encontrar la carta, usa un label para dar la descripción del color y valor en pantalla.
             try
             {
                 Image image = new Image(getClass().getResource(ruta).toExternalForm());
@@ -583,7 +584,15 @@ public class GameUnoController {
     }
 
 
+    @FXML
+    void onActionUnoButtonMachine(ActionEvent event) {
 
+    }
+
+    @FXML
+    void onActionUnoButtonPlayer(ActionEvent event) {
+
+    }
 
 
     private void actualizarContadorCartas(String color){

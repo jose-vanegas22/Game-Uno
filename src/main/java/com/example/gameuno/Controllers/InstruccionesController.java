@@ -1,6 +1,8 @@
 package com.example.gameuno.Controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -16,6 +18,10 @@ public class InstruccionesController {
     @FXML
     private VBox VBoxPrincipal;
 
+    @FXML
+    private Button returnButton;
+
+
     /**
      * The first method to run when starting
      */
@@ -28,5 +34,10 @@ public class InstruccionesController {
     public void hideInstructionsView(){
         Stage stage = (Stage) VBoxPrincipal.getScene().getWindow();
         stage.hide();
+    }
+
+    @FXML
+    void onActionReturnButton(ActionEvent event) {
+        hideInstructionsView();
     }
 }

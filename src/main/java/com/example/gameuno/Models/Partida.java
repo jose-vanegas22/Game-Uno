@@ -311,6 +311,7 @@ public class Partida {
             Carta cartaRobada = mazoUno.robarCarta(); // Saca una carta del mazo y la guarda en la variable
             jugadorAfectado.recibirCarta(cartaRobada); // Le añade a la mano la carta robada al jugador afectado
         }
+        pasarTurno();
     }
 
     /**
@@ -329,6 +330,7 @@ public class Partida {
             Carta cartaRobada = mazoUno.robarCarta(); // Saca la ultima carta del mazo y la guarda en la variable
             jugadorAfectado.recibirCarta(cartaRobada); // Se añade la carta robada en la mano del jugador afectado
         }
+        pasarTurno();
     }
 
     /**
