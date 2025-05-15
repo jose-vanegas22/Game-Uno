@@ -6,9 +6,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,9 +30,6 @@ import java.util.List;
 public class GameUnoController {
 
     @FXML
-    private VBox VBoxPrincipal;
-
-    @FXML
     private HBox HBoxCartsContainer;
 
     @FXML
@@ -44,19 +39,32 @@ public class GameUnoController {
     private ImageView ImagenViewCartasCentro;
 
     @FXML
-    private ImageView imagenViewMazo;
-
-    @FXML
     private Label LabelNombreJugador;
 
     @FXML
-    private Label labelTurno;
+    private VBox VBoxPrincipal;
+
+    @FXML
+    private Label cardInfoLabel;
+
+    @FXML
+    private ImageView imagenViewMazo;
+
+    @FXML
+    private Label labelCambioColor;
 
     @FXML
     private Label labelNumeroCartas;
 
     @FXML
-    private Label labelCambioColor;
+    private Label labelTurno;
+
+    @FXML
+    private Button unoButtonMachine;
+
+    @FXML
+    private Button unoButtonPlayer;
+
 
     private Partida partida;
     private JugadorPersona jugadorPersona;
@@ -156,12 +164,30 @@ public class GameUnoController {
 
         // Con este For-each lo que se hace es recorrer toda la lista de la mano para crear visualmente su carta y ponerla en el contenedor
         for (Carta  carta : mano) {
+            ImageView imageView;
             String ruta = "/com/example/gameuno/Images/Cards-uno/" + carta.getNombreArchivo();
-            ImageView imageView = new ImageView(new Image(getClass().getResource(ruta).toExternalForm()));
+
+            // Con esta excepción hacemos una alternativa en caso de que la imagen de la carta no se encuentra.
+            try{
+                Image imagen = new Image(getClass().getResource(ruta).toExternalForm());
+                imageView = new ImageView(imagen);
+            } catch (Exception e) {
+                System.out.println("no se encontró la imagen");
+                String reverseRoute = "/com/example/gameuno/Images/Cards-uno/card_uno.png";
+                Image reverse = new Image(reverseRoute);
+                imageView = new ImageView(reverse);
+
+            }
+
             imageView.setFitWidth(60);
             imageView.setPreserveRatio(true);
 
+            String cardInfo = "Color: " + carta.getColor() + ", Valor: " + carta.getValor();
+            Tooltip tooltip = new Tooltip(cardInfo);
+            Tooltip.install(imageView, tooltip);
+
             // Evento para jugar cartas, evento justamente creado adentro para que cada que se cree una carta asignarle su propio evento
+            ImageView finalImageView = imageView;
             imageView.setOnMouseClicked(event -> {
 
                 if(!partida.esTurnoJugadorPersona()) return;
@@ -170,7 +196,7 @@ public class GameUnoController {
                 System.out.println("Carta central actual: " + partida.getCartaCentral().getNombreArchivo());
                 if(partida.turnoJugadorPersona(carta)){
                     System.out.println("¡Jugada válida!");
-                    HBoxCartsContainer.getChildren().remove(imageView); // Se elimina visualmente la carta que se jugo
+                    HBoxCartsContainer.getChildren().remove(finalImageView); // Se elimina visualmente la carta que se jugo
                     mostrarCartaCentro(carta); // La carta que se jugo se muestra en el centro visualmente
 
                     // Si la carta que se jugo es cartaMas2 actualiza visualmente la cantidad de cartas de jugadorMaquina en mano
@@ -353,8 +379,15 @@ public class GameUnoController {
     public void mostrarCartaCentro(Carta carta) {
         if(carta != null) {
             String ruta = "/com/example/gameuno/Images/Cards-uno/" + carta.getNombreArchivo();
-            Image image = new Image(getClass().getResource(ruta).toExternalForm());
-            ImagenViewCartasCentro.setImage(image);
+
+            try
+            {
+                Image image = new Image(getClass().getResource(ruta).toExternalForm());
+                ImagenViewCartasCentro.setImage(image);
+            }
+            catch (Exception e){
+
+            }
             System.out.println("Carta del centro: " + carta.getNombreArchivo());
         }
     }
