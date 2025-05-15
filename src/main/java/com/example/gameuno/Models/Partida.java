@@ -478,20 +478,23 @@ public class Partida {
         Thread hiloUNO = new Thread(() -> {
             while (partiaIniciada){
                 try {
-                    Thread.sleep(1500);
+                    Thread.sleep(1000);
 
                     if(jugadorPersona.getManoSize() == 1 && !jugadorPersona.getUnoState()){
                         Thread.sleep(2000);
                         checkUNO(jugadorPersona, jugadorMaquina);
                     }
-                    else if (jugadorMaquina.getManoSize() == 1 && !jugadorMaquina.getUnoState()) {
+
+                    if (jugadorMaquina.getManoSize() == 1 && !jugadorMaquina.getUnoState()) {
                         Thread.sleep(2000);
                         singUNO(jugadorMaquina);
                     }
-                    else if (jugadorMaquina.getManoSize() != 1 && jugadorMaquina.getUnoState()) {
+
+                    if (jugadorMaquina.getManoSize() != 1 && jugadorMaquina.getUnoState()) {
                         jugadorMaquina.setUnoState(false);
                     }
-                    else if (jugadorPersona.getManoSize() != 1 && jugadorPersona.getUnoState()) {
+
+                    if (jugadorPersona.getManoSize() != 1 && jugadorPersona.getUnoState()) {
                         jugadorPersona.setUnoState(false);
                     }
                 }
@@ -509,7 +512,8 @@ public class Partida {
      * @param jugador: player who sings UNO
      */
     public void singUNO(Jugador jugador) {
-        if (jugador.getMano().size() == 1){
+        System.out.println("Hand size: " + jugador.getMano().size());
+        if (jugador.getManoSize() == 1){
             jugador.setUnoState(true);
             System.out.println("¡" + jugador.getNombre() + " ha cantado UNO!");
         }
@@ -524,7 +528,7 @@ public class Partida {
      * @param oponente: player who sings the UNO
      */
     public void checkUNO(Jugador jugador, Jugador oponente){
-        if (jugador.getMano().size() == 1 && !jugador.getUnoState()){
+        if (jugador.getManoSize() == 1 && !jugador.getUnoState()){
 
             Carta cartaRobada = mazoUno.robarCarta();
             jugador.recibirCarta(cartaRobada);
@@ -535,6 +539,10 @@ public class Partida {
             System.out.println("Movimiento invalido.");
         }
 
+    }
+
+    public void setPartiaIniciada(boolean partiaIniciada){
+        this.partiaIniciada = partiaIniciada;
     }
 
 }

@@ -96,6 +96,7 @@ public class GameUnoController {
 
         // Iniciar partida (repartir cartas)
         partida.iniciarPartida();
+        partida.iniciarPartida();
 
         // Colocar la carta inicial en la mesa y mostrarla visualmente
         //partida.colocarCartaInicial();
@@ -561,6 +562,7 @@ public class GameUnoController {
         Jugador ganador = partida.verificarGanador(); // Guarda lo que lanza verificarGanador en la variable
         if (ganador != null) { // Si hay un ganador
             juegoFinalizado = true; // Cambia el valor para que se detenga cualquier metodo o parte del codigo
+            partida.setPartiaIniciada(false);
             mostrarMensajeGanador(ganador); // Muestra el alert
             habilitarInterfazJugadorPersona(false); // Deshabilita la interfaz del jugadorPersona
             //deshabilitarInteraccion(); // Deshabilita la interfaz de jugadorPersona
@@ -586,12 +588,12 @@ public class GameUnoController {
 
     @FXML
     void onActionUnoButtonMachine(ActionEvent event) {
-
+        partida.checkUNO(jugadorMaquina, jugadorPersona);
     }
 
     @FXML
     void onActionUnoButtonPlayer(ActionEvent event) {
-
+        partida.singUNO(jugadorPersona);
     }
 
 
