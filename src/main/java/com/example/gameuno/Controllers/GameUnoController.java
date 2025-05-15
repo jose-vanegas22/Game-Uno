@@ -379,6 +379,7 @@ public class GameUnoController {
     public void mostrarCartaCentro(Carta carta) {
         if(carta != null) {
             String ruta = "/com/example/gameuno/Images/Cards-uno/" + carta.getNombreArchivo();
+            cardInfoLabel.setText(" ");
 
             try
             {
@@ -386,7 +387,11 @@ public class GameUnoController {
                 ImagenViewCartasCentro.setImage(image);
             }
             catch (Exception e){
-
+                System.out.println("no se encontró la imagen");
+                String reverseRoute = "/com/example/gameuno/Images/Cards-uno/card_uno.png";
+                Image reverse = new Image(reverseRoute);
+                ImagenViewCartasCentro.setImage(reverse);
+                cardInfoLabel.setText("Color actual: " + carta.getColor() + ", Valor: actual" + carta.getValor());
             }
             System.out.println("Carta del centro: " + carta.getNombreArchivo());
         }
