@@ -384,9 +384,9 @@ public class Partida {
         JugadorPersona jugadorPersona = getJugadorPersona(); // Se asigna el unico objeto de JugadorPersona que puede exisitr
         JugadorMaquina jugadorMaquina = getJugadorMaquina(); // Se asigna el unico objeto de JugadorMaquina que puede existir
 
-        if (jugadorPersona.getMano().isEmpty()){
+        if (jugadorPersona.getMano().isEmpty() && jugadorPersona.getUnoState()){
             return jugadorPersona;
-        } else if (jugadorMaquina.getMano().isEmpty()){
+        } else if (jugadorMaquina.getMano().isEmpty() && jugadorMaquina.getUnoState()){
             return jugadorMaquina;
         }
 
@@ -469,6 +469,72 @@ public class Partida {
     public MesaDeJuego getMesa() {
 
         return mesa;
+    }
+
+    /**
+     * Function that creates a thread to work the UNO logic for the Machine player and update the UNO state for players if needed
+     */
+    public void iniciarHiloVerificadorUNO(){
+        Thread hiloUNO = new Thread(() -> {
+            while (partiaIniciada){
+                try {
+                    Thread.sleep(1500);
+
+                    if(jugadorPersona.getManoSize() == 1 && !jugadorPersona.getUnoState()){
+                        Thread.sleep(2000);
+                        checkUNO(jugadorPersona, jugadorMaquina);
+                    }
+                    else if (jugadorMaquina.getManoSize() == 1 && !jugadorMaquina.getUnoState()) {
+                        Thread.sleep(2000);
+                        singUNO(jugadorMaquina);
+                    }
+                    else if (jugadorMaquina.getManoSize() != 1 && jugadorMaquina.getUnoState()) {
+                        jugadorMaquina.setUnoState(false);
+                    }
+                    else if (jugadorPersona.getManoSize() != 1 && jugadorPersona.getUnoState()) {
+                        jugadorPersona.setUnoState(false);
+                    }
+                }
+                catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        hiloUNO.setDaemon(true);
+        hiloUNO.start();
+    }
+
+    /**
+     * Function that sings UNO for a player.
+     * @param jugador: player who sings UNO
+     */
+    public void singUNO(Jugador jugador) {
+        if (jugador.getMano().size() == 1){
+            jugador.setUnoState(true);
+            System.out.println("¡" + jugador.getNombre() + " ha cantado UNO!");
+        }
+        else {
+            System.out.println("No puedes cantar UNO si tienes más de una carta.");
+        }
+    }
+
+    /**
+     * Function that sings UNO to the oponent player if they haven't done so, making them take a card
+     * @param jugador: player afected by the UNO
+     * @param oponente: player who sings the UNO
+     */
+    public void checkUNO(Jugador jugador, Jugador oponente){
+        if (jugador.getMano().size() == 1 && !jugador.getUnoState()){
+
+            Carta cartaRobada = mazoUno.robarCarta();
+            jugador.recibirCarta(cartaRobada);
+            System.out.println(oponente.getNombre() + " ha cantado UNO a "  + jugador.getNombre() );
+        }
+
+        else {
+            System.out.println("Movimiento invalido.");
+        }
+
     }
 
 }

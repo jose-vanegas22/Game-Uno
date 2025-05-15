@@ -15,7 +15,7 @@ public class Jugador {
     private String nombre;
     private List<Carta> mano; //Lista la cual guarda las cartas que tiene el jugador
     private boolean UNOState;
-    private boolean winner;
+
 
     public Jugador(String nombre) {
         this.nombre = nombre;
@@ -53,12 +53,11 @@ public class Jugador {
         return this.mano = mano;
     }
 
-
-    public void setWinner(boolean winner) {
-        this.winner = winner;
-    }
-
     public int getManoSize() {
         return this.mano.size();
+    }
+
+    public boolean getUnoState() {
+        return UNOState;
     }
 }
