@@ -444,9 +444,11 @@ public class GameUnoController {
 
         if (partida.esTurnoJugadorPersona()) {
             habilitarInterfazJugadorPersona(true);
+            mostrarCartasPersona();
             System.out.println(">> Turno JUGADOR - Esperando acción...");
             // Solo esperar interacción del jugador
         } else {
+            whoSingUNOLabel.setText(" ");
             habilitarInterfazJugadorPersona(false);
             System.out.println(">> Turno MAQUINA - Jugando...");
 
@@ -598,7 +600,7 @@ public class GameUnoController {
     @FXML
     void onActionUnoButtonPlayer(ActionEvent event) {
         partida.singUNO(partida.getJugadorPersona());
-        whoSingUNOLabel.setText(partida.getJugadorPersona().getNombre() + "Ha cantado UNO!");
+        whoSingUNOLabel.setText(partida.getJugadorPersona().getNombre() + " canto UNO!");
     }
 
 
@@ -612,7 +614,7 @@ public class GameUnoController {
             whoSingUNOLabel.setText(" ");
         }
         else if (partida.getJugadorMaquina().getUnoState() == true) {
-            whoSingUNOLabel.setText(partida.getJugadorMaquina().getNombre() + "Ha cantado UNO!");
+            whoSingUNOLabel.setText(partida.getJugadorMaquina().getNombre() + " canto UNO!");
         }
 
     }
