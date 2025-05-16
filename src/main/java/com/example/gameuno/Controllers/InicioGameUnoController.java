@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.transform.Rotate;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -124,6 +125,7 @@ public class InicioGameUnoController {
             gameUnoView.getController().setJugador(jugadorPersona);
             gameUnoView.getController().mostrarNombreJugador();
             gameUnoView.show();
+            hideStartUnoView();
         } else{
             LabelMensaje.setText("Decidiste no iniciar el juego");
         }
@@ -139,5 +141,10 @@ public class InicioGameUnoController {
     void onActionInstruccionesBoton (ActionEvent actionEvent) throws IOException {
         InstruccionesView instruccionesView = InstruccionesView.getInstance();
         instruccionesView.show();
+    }
+
+    public void hideStartUnoView(){
+        Stage stage = (Stage) TextFieldNombre.getScene().getWindow();
+        stage.hide();
     }
 }

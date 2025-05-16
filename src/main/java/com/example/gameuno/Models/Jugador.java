@@ -14,10 +14,13 @@ public class Jugador {
 
     private String nombre;
     private List<Carta> mano; //Lista la cual guarda las cartas que tiene el jugador
+    private boolean UNOState;
+
 
     public Jugador(String nombre) {
         this.nombre = nombre;
         this.mano = new ArrayList<>();
+        this.UNOState = false;
     }
 
     /**
@@ -42,6 +45,19 @@ public class Jugador {
         return mano;
     }
 
+    public void setUnoState(boolean unoState) {
+        this.UNOState = unoState;
+    }
 
+    public List<Carta> SetMano(List<Carta> mano) {
+        return this.mano = mano;
+    }
 
+    public int getManoSize() {
+        return this.mano.size();
+    }
+
+    public boolean getUnoState() {
+        return UNOState;
+    }
 }
