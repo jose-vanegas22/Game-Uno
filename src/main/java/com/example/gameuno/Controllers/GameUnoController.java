@@ -65,6 +65,8 @@ public class GameUnoController {
     @FXML
     private Button unoButtonPlayer;
 
+    @FXML
+    private Label whoSingUNOLabel;
 
     private Partida partida;
     private JugadorPersona jugadorPersona;
@@ -141,6 +143,7 @@ public class GameUnoController {
         });
 
         partida.iniciarHiloVerificadorUNO();
+        actualizarWhoSangUNO();
 
         //Contar las cartas
         actualizarContadorCartas("red"); // Codigo pendiente para eliminar
@@ -595,6 +598,7 @@ public class GameUnoController {
     @FXML
     void onActionUnoButtonPlayer(ActionEvent event) {
         partida.singUNO(partida.getJugadorPersona());
+        whoSingUNOLabel.setText(partida.getJugadorPersona().getNombre() + "Ha cantado UNO!");
     }
 
 
@@ -603,7 +607,15 @@ public class GameUnoController {
         labelNumeroCartas.setText(Integer.toString(cantidad));
     }
 
+    public void actualizarWhoSangUNO(){
+        if (partida.getJugadorMaquina().getUnoState() == false && partida.getJugadorPersona().getUnoState() == false){
+            whoSingUNOLabel.setText(" ");
+        }
+        else if (partida.getJugadorMaquina().getUnoState() == true) {
+            whoSingUNOLabel.setText(partida.getJugadorMaquina().getNombre() + "Ha cantado UNO!");
+        }
 
+    }
 
     /**
      // Metodo el cual deshabilita la interfaz del usuario
