@@ -480,22 +480,22 @@ public class Partida {
                 try {
                     Thread.sleep(1000);
 
-                    if(jugadorPersona.getManoSize() == 1 && !jugadorPersona.getUnoState()){
+                    if(getJugadorPersona().getManoSize() == 1 && !getJugadorPersona().getUnoState()){
                         Thread.sleep(2000);
-                        checkUNO(jugadorPersona, jugadorMaquina);
+                        checkUNO(getJugadorPersona(), getJugadorMaquina());
                     }
 
-                    if (jugadorMaquina.getManoSize() == 1 && !jugadorMaquina.getUnoState()) {
+                    if (getJugadorMaquina().getManoSize() == 1 && !getJugadorMaquina().getUnoState()) {
                         Thread.sleep(2000);
-                        singUNO(jugadorMaquina);
+                        singUNO(getJugadorMaquina());
                     }
 
-                    if (jugadorMaquina.getManoSize() != 1 && jugadorMaquina.getUnoState()) {
-                        jugadorMaquina.setUnoState(false);
+                    if (getJugadorMaquina().getManoSize() != 1 && getJugadorMaquina().getUnoState()) {
+                        getJugadorMaquina().setUnoState(false);
                     }
 
-                    if (jugadorPersona.getManoSize() != 1 && jugadorPersona.getUnoState()) {
-                        jugadorPersona.setUnoState(false);
+                    if (getJugadorPersona().getManoSize() != 1 && getJugadorPersona().getUnoState()) {
+                        getJugadorPersona().setUnoState(false);
                     }
                 }
                 catch (InterruptedException e){

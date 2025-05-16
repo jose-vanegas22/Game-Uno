@@ -96,7 +96,6 @@ public class GameUnoController {
 
         // Iniciar partida (repartir cartas)
         partida.iniciarPartida();
-        partida.iniciarPartida();
 
         // Colocar la carta inicial en la mesa y mostrarla visualmente
         //partida.colocarCartaInicial();
@@ -140,6 +139,8 @@ public class GameUnoController {
             habilitarInterfazJugadorPersona(partida.esTurnoJugadorPersona()); // Muestra la interfaz del jugadorPersona si es su turno
             actualizarTurnoUI();
         });
+
+        partida.iniciarHiloVerificadorUNO();
 
         //Contar las cartas
         actualizarContadorCartas("red"); // Codigo pendiente para eliminar
@@ -588,12 +589,12 @@ public class GameUnoController {
 
     @FXML
     void onActionUnoButtonMachine(ActionEvent event) {
-        partida.checkUNO(jugadorMaquina, jugadorPersona);
+        partida.checkUNO(partida.getJugadorMaquina(), partida.getJugadorPersona());
     }
 
     @FXML
     void onActionUnoButtonPlayer(ActionEvent event) {
-        partida.singUNO(jugadorPersona);
+        partida.singUNO(partida.getJugadorPersona());
     }
 
 
